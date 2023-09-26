@@ -11,13 +11,9 @@ int main(int argc, char **argv)
         argv++;
         while (*argv)
         {
-            int index = 0;
             std::string s(*argv);
-            while (s[index])
-            {
-                std::cout << (char) toupper(s[index]);
-                index++;
-            }
+            for ( std::string::iterator it=s.begin(); it!=s.end(); ++it)
+                std::cout << (char) toupper(*it);
             argv++;
         }
     }
