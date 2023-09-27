@@ -17,6 +17,6 @@ int main(int argc, char **argv)
             argv++;
         }
     }
-    std::cout << std::endl;
+    std::cout << '\n';
     return 0;
 }

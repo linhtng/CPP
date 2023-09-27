@@ -2,8 +2,8 @@ CFLAGS = g++ -Wall -Wextra -Werror -std=c++98
 
 NAME = phonebook
 
-SRC = PhoneBook.class.cpp \
-	Contact.class.cpp \
+SRC = PhoneBook.cpp \
+	Contact.cpp \
 	main.cpp
 
 OBJ_PATH = ./objects/
