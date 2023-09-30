@@ -23,6 +23,7 @@ public:
     void setNickName(std::string s);
     void setPhoneNumber(std::string s);
     void setDarkSecret(std::string s);
+    bool contactEmpty();
 
 private:
     std::string _firstName;

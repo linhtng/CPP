@@ -66,3 +66,10 @@ void Contact::setDarkSecret(std::string s)
 
     return;
 }
+
+bool Contact::contactEmpty()
+{
+    if (this->_firstName.empty())
+        return true;
+    return false;
+}

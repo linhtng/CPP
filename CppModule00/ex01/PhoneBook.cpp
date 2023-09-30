@@ -3,11 +3,10 @@
 
 /* PUBLIC METHODS */
 
-PhoneBook::PhoneBook() : _index(-1) {}
+PhoneBook::PhoneBook() : _index(-1), _numContacts(0) {}
 
 PhoneBook::~PhoneBook()
 {
-    // std::cout << "Contact is saved." << '\n';
     _bibiByebye();
 }
 
@@ -36,9 +35,11 @@ void PhoneBook::atYourService()
 void PhoneBook::_trackIndex()
 {
     _index++;
-    if (_index > 7)
+    if (_numContacts >= 8)
     {
         _index = 0;
+        for (int i = 0; i < (_numContacts % 8); ++i)
+            _index++;
     }
 }
 
@@ -70,6 +71,7 @@ void PhoneBook::_addContact()
     input = _readInput("dark secret. This field can't be left empty.");
     this->_contacts[_index].setDarkSecret(input);
 
+    _numContacts++;
     std::cout << "Contact saved successfully." << '\n';
 }
 
@@ -107,34 +109,17 @@ std::string PhoneBook::_trimmed_input(std::string strToTrim) const
     while (end > start && isspace(strToTrim[end - 1]))
         end--;
     trimmed = strToTrim.substr(start, end - start);
-    return trimmed;
-}
-
-std::string PhoneBook::_readContactInfo(std::string const prompt)
-{
-    bool filledInfo = false;
-    std::string input;
-
-    while (!filledInfo)
+    for (std::string::iterator it = trimmed.begin(); it != trimmed.end(); ++it)
     {
-        std::cout << "Enter your " << prompt << '\n';
-        std::getline(std::cin, input);
-        if (std::cin.eof())
-        {
-            _bibiByebye();
-            exit(0);
-        }
-        if (!input.empty())
-        {
-            filledInfo = true;
-        }
+        if (*it == '\t')
+            *it = ' ';
     }
-    return input;
+    return trimmed;
 }
 
 void PhoneBook::_searchContact()
 {
-    if (_index == -1)
+    if (!_numContacts)
     {
         std::cout << "None saved contact to show. Try ADD contact first." << '\n';
         return;
@@ -147,24 +132,35 @@ void PhoneBook::_displayContactList()
 {
     std::cout << "Current contact list to search from:" << '\n';
     std::cout << std::setw(10) << "Index"
-              << " | "
+              << "|"
               << std::setw(10) << "First name"
-              << " | "
+              << "|"
               << std::setw(10) << "Last name"
-              << " | "
+              << "|"
               << std::setw(10) << "Nickname" << '\n';
 
-    for (int i = 0; i <= _index; ++i)
+    for (int i = 0; i <= 7; ++i)
     {
-        std::cout << std::setw(10) << i << " | "
-                  << std::setw(10) << _printLongText(this->_contacts[i].getFirstName()) << " | "
-                  << std::setw(10) << _printLongText(this->_contacts[i].getLastName()) << " | "
-                  << std::setw(10) << _printLongText(this->_contacts[i].getNickName()) << '\n';
+        _displayContactEntry(i);
     }
+}
+void PhoneBook::_displayContactEntry(int const i)
+{
+    if (this->_contacts[i].contactEmpty())
+        return;
+    std::cout << std::setw(10) << i << "|"
+              << std::setw(10) << _formatLongText(this->_contacts[i].getFirstName()) << "|"
+              << std::setw(10) << _formatLongText(this->_contacts[i].getLastName()) << "|"
+              << std::setw(10) << _formatLongText(this->_contacts[i].getNickName()) << '\n';
 }
 
 void PhoneBook::_displayContactInfo(int const index)
 {
+    if (this->_contacts[index].contactEmpty())
+    {
+        std::cout << "Error 404. Contact not found at given index." << '\n';
+        return;
+    }
     std::cout << "First name: " << this->_contacts[index].getFirstName() << '\n';
     std::cout << "Last name: " << this->_contacts[index].getLastName() << '\n';
     std::cout << "Nickname: " << this->_contacts[index].getNickName() << '\n';
@@ -172,14 +168,14 @@ void PhoneBook::_displayContactInfo(int const index)
     std::cout << "Dark secret: " << this->_contacts[index].getDarkSecret() << '\n';
 }
 
-std::string PhoneBook::_printLongText(std::string text) const
+std::string PhoneBook::_formatLongText(std::string text) const
 {
-    if (text.length() > 10)
+    std::string formattedText = text;
+    if (text.length() > COLUMN_WIDTH)
     {
-        text.resize(9);
-        text += '.';
+        formattedText = text.substr(0, COLUMN_WIDTH - 1) + '.';
     }
-    return text;
+    return formattedText;
 }
 
 void PhoneBook::_searchByIndex()
@@ -189,7 +185,7 @@ void PhoneBook::_searchByIndex()
     std::cout << "Enter the index of the contact you want to see: " << '\n';
     while (true)
     {
-        if (!(std::cin >> search_index))
+        if (!(std::cin >> search_index) || search_index < 0 || search_index > 7)
         {
             if (std::cin.eof())
             {
@@ -200,12 +196,6 @@ void PhoneBook::_searchByIndex()
             std::cin.clear();
             while (std::cin.get() != '\n')
                 ;
-        }
-        else if (search_index < 0 || search_index > _index)
-        {
-            std::cerr << "Index not found. Your phonebook has ";
-            std::cerr << _index + 1;
-            std::cerr << " contacts. Please enter a valid index accordingly." << '\n';
         }
         else
         {
