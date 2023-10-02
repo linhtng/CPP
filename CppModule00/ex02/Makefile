@@ -2,9 +2,7 @@ CFLAGS = g++ -Wall -Wextra -Werror -std=c++98
 
 NAME = account
 
-SRC = Account.cpp \
-	Account.cpp \
-	test.cpp
+SRC = tests.cpp Account.cpp
 
 OBJ_PATH = ./objects/
 OBJ		= $(SRC:.cpp=.o)
