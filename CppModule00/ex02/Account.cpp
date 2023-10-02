@@ -18,7 +18,7 @@ Account::Account(int initial_deposit) : _accountIndex(_nbAccounts), _amount(init
 Account::~Account()
 {
     _displayTimestamp();
-    std::cout << " index:" << _accountIndex << ";amount:" << _amount << ";close" << '\n';
+    std::cout << " index:" << _accountIndex << ";amount:" << _amount << ";closed" << '\n';
 }
 
 int Account::getNbAccounts()
