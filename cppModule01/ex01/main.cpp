@@ -11,7 +11,6 @@ int main(int arc, char **arv)
         return 0;
     }
     int intValue = atoi(arv[2]);
-    std::cout << "N is " << intValue << '\n';
     Zombie *testHorde = zombieHorde(intValue, arv[1]);
     if (testHorde)
     {
