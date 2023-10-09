@@ -15,7 +15,6 @@ private:
     void info();
     void warning();
     void error();
-    void threaten();
 };
 
 #endif

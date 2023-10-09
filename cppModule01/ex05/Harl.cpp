@@ -7,27 +7,13 @@ Harl::~Harl() {}
 
 void Harl::complain(std::string level)
 {
-    void (Harl::*func)() = NULL;
-
-    switch (level[0])
+    std::string levels[] = {"DEBUG", "INFO", "WARNING", "ERROR"};
+    void (Harl::*func[4])() = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
+    for (int i = 0; i < 4; ++i)
     {
-    case 'D':
-        func = &Harl::debug;
-        break;
-    case 'I':
-        func = &Harl::info;
-        break;
-    case 'W':
-        func = &Harl::warning;
-        break;
-    case 'E':
-        func = &Harl::error;
-        break;
-    default:
-        func = &Harl::threaten;
-        break;
+        if (level == levels[i])
+            (this->*func[i])();
     }
-    (this->*func)();
 }
 
 /* Private */
@@ -55,9 +41,4 @@ void Harl::error()
 {
     std::cout << "This is unacceptable! ";
     std::cout << "I want to speak to the manager now.\n";
-}
-
-void Harl::threaten()
-{
-    std::cout << "I'm about to end your whole career.\n";
 }
