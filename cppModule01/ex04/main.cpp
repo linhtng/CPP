@@ -39,13 +39,13 @@ int main(int argc, char **argv)
         return 0;
     }
     std::string fileName = argv[1];
-    std::ifstream input_file(fileName);
-    if (!input_file)
+    std::ifstream inputFile(fileName);
+    if (!inputFile)
     {
         std::cerr << "Error: unable to open input file " << fileName << '\n';
         return 1;
     }
-    std::string fileContent((std::istreambuf_iterator<char>(input_file)),
+    std::string fileContent((std::istreambuf_iterator<char>(inputFile)),
                             (std::istreambuf_iterator<char>()));
     replace(fileContent, argv[2], argv[3]);
     replaceFile(fileName, fileContent);
