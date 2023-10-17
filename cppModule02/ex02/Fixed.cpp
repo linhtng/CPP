@@ -1,6 +1,7 @@
 #include "Fixed.hpp"
 
-/* Public */
+/* Constructors */
+
 Fixed::Fixed() : rawBits(0)
 {
     std::cout << "Default constructor called\n";
@@ -30,15 +31,121 @@ Fixed &Fixed::operator=(const Fixed &rhs)
     return *this;
 }
 
-Fixed Fixed::operator+(Fixed const &rhs) const
+/* The 6 comparison operators: >, <, >=, <=, == and != */
+
+bool Fixed::operator>(const Fixed &rhs) const
+{
+    return (rawBits > rhs.rawBits);
+}
+
+bool Fixed::operator<(const Fixed &rhs) const
+{
+    return (rawBits < rhs.rawBits);
+}
+
+bool Fixed::operator>=(const Fixed &rhs) const
+{
+    return (rawBits >= rhs.rawBits);
+}
+
+bool Fixed::operator<=(const Fixed &rhs) const
+{
+    return (rawBits <= rhs.rawBits);
+}
+
+bool Fixed::operator==(const Fixed &rhs) const
+{
+    return (rawBits == rhs.rawBits);
+}
+
+bool Fixed::operator!=(const Fixed &rhs) const
+{
+    return (rawBits != rhs.rawBits);
+}
+
+/* The 4 arithmetic operators: +, -, *, and / */
+
+Fixed Fixed::operator+(const Fixed &rhs) const
 {
     return Fixed(rawBits + rhs.rawBits);
 }
+
+Fixed Fixed::operator-(const Fixed &rhs) const
+{
+    return Fixed(rawBits - rhs.rawBits);
+}
+
+Fixed Fixed::operator*(const Fixed &rhs) const
+{
+    return Fixed(this->toFloat() * rhs.toFloat());
+}
+
+Fixed Fixed::operator/(const Fixed &rhs) const
+{
+    return Fixed(this->toFloat() / rhs.toFloat());
+    // return Fixed(rawBits / rhs.rawBits);
+}
+
+/* The 4 increment/decrement (pre- & post-increment, pre- & post-decrement) operators */
+
+Fixed &Fixed::operator++()
+{
+    rawBits++;
+    return *this;
+}
+
+Fixed Fixed::operator++(int)
+{
+    Fixed original(*this);
+    ++(*this);
+    return original;
+}
+
+Fixed &Fixed::operator--()
+{
+    rawBits--;
+    return *this;
+}
+
+Fixed Fixed::operator--(int)
+{
+    Fixed original(*this);
+    --(*this);
+    return original;
+}
+
+/* Destructor */
 
 Fixed::~Fixed()
 {
     std::cout << "Destructor called\n";
 }
+
+/* CLASS STATIC MEMBER FUNCTIONS */
+
+Fixed &Fixed::min(Fixed &a, Fixed &b)
+{
+    return (a < b) ? a : b;
+}
+
+const Fixed &Fixed::min(const Fixed &a, const Fixed &b)
+{
+    return (a < b) ? a : b;
+}
+
+// Static member function to find the maximum of two fixed-point numbers
+Fixed &Fixed::max(Fixed &a, Fixed &b)
+{
+    return (a > b) ? a : b;
+}
+
+// Static member function to find the maximum of two constant fixed-point numbers
+const Fixed &Fixed::max(const Fixed &a, const Fixed &b)
+{
+    return (a > b) ? a : b;
+}
+
+/* CLASS PUBLIC METHODS */
 
 int Fixed::getRawBits() const
 {
@@ -61,7 +168,9 @@ int Fixed::toInt() const
     return rawBits >> fractionalBits;
 }
 
-std::ostream &operator<<(std::ostream &outputStream, Fixed const &rhs)
+/* Output Stream */
+
+std::ostream &operator<<(std::ostream &outputStream, const Fixed &rhs)
 {
     outputStream << rhs.toFloat();
     return outputStream;
