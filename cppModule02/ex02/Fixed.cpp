@@ -27,7 +27,7 @@ Fixed &Fixed::operator=(const Fixed &rhs)
 {
     std::cout << "Copy assignment operator called\n";
     if (this != &rhs)
-        rawBits = rhs.rawBits;
+        this->setRawBits(rhs.getRawBits());
     return *this;
 }
 
@@ -35,55 +35,62 @@ Fixed &Fixed::operator=(const Fixed &rhs)
 
 bool Fixed::operator>(const Fixed &rhs) const
 {
-    return (rawBits > rhs.rawBits);
+    return (rawBits > rhs.getRawBits());
 }
 
 bool Fixed::operator<(const Fixed &rhs) const
 {
-    return (rawBits < rhs.rawBits);
+    return (rawBits < rhs.getRawBits());
 }
 
 bool Fixed::operator>=(const Fixed &rhs) const
 {
-    return (rawBits >= rhs.rawBits);
+    return (rawBits >= rhs.getRawBits());
 }
 
 bool Fixed::operator<=(const Fixed &rhs) const
 {
-    return (rawBits <= rhs.rawBits);
+    return (rawBits <= rhs.getRawBits());
 }
 
 bool Fixed::operator==(const Fixed &rhs) const
 {
-    return (rawBits == rhs.rawBits);
+    return (rawBits == rhs.getRawBits());
 }
 
 bool Fixed::operator!=(const Fixed &rhs) const
 {
-    return (rawBits != rhs.rawBits);
+    return (rawBits != rhs.getRawBits());
 }
 
 /* The 4 arithmetic operators: +, -, *, and / */
 
 Fixed Fixed::operator+(const Fixed &rhs) const
 {
-    return Fixed(rawBits + rhs.rawBits);
+    Fixed res;
+    res.setRawBits(this->getRawBits() + rhs.getRawBits());
+    return res;
 }
 
 Fixed Fixed::operator-(const Fixed &rhs) const
 {
-    return Fixed(rawBits - rhs.rawBits);
+    Fixed res;
+    res.setRawBits(this->getRawBits() - rhs.getRawBits());
+    return res;
 }
 
 Fixed Fixed::operator*(const Fixed &rhs) const
 {
-    return Fixed(this->toFloat() * rhs.toFloat());
+    Fixed res;
+    res.rawBits = (static_cast<int64_t>(rawBits) * static_cast<int64_t>(rhs.rawBits)) >> fractionalBits;
+    return res;
 }
 
 Fixed Fixed::operator/(const Fixed &rhs) const
 {
-    return Fixed(this->toFloat() / rhs.toFloat());
-    // return Fixed(rawBits / rhs.rawBits);
+    Fixed res;
+    res.rawBits = static_cast<int64_t>(rawBits) * (1 << fractionalBits) / static_cast<int64_t>(rhs.rawBits);
+    return res;
 }
 
 /* The 4 increment/decrement (pre- & post-increment, pre- & post-decrement) operators */
@@ -149,7 +156,7 @@ const Fixed &Fixed::max(const Fixed &a, const Fixed &b)
 
 int Fixed::getRawBits() const
 {
-    std::cout << "getRawBits member function called\n";
+    // std::cout << "getRawBits member function called\n";
     return rawBits;
 }
 
