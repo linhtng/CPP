@@ -95,6 +95,7 @@ Fixed Fixed::operator/(const Fixed &rhs) const
 
 /* The 4 increment/decrement (pre- & post-increment, pre- & post-decrement) operators */
 
+/* Adding 1 to the least significant (rightmost) portion of the binary representation */
 Fixed &Fixed::operator++()
 {
     rawBits++;

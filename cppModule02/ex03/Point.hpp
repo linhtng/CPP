@@ -2,7 +2,6 @@
 #define POINT_HPP
 
 #include "Fixed.hpp"
-#include <cmath>
 
 class Point
 {

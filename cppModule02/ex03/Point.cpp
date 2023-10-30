@@ -41,10 +41,10 @@ bool Point::operator==(const Point &rhs) const
 {
     if (this->getX() == rhs.getX() && this->getY() == rhs.getY())
     {
-        std::cout << "lhs x: " << this->getX() << '\n';
-        std::cout << "lhs y: " << this->getY() << '\n';
-        std::cout << "rhs x: " << rhs.getX() << '\n';
-        std::cout << "rhs y: " << rhs.getY() << '\n';
+        // std::cout << "lhs x: " << this->getX() << '\n';
+        // std::cout << "lhs y: " << this->getY() << '\n';
+        // std::cout << "rhs x: " << rhs.getX() << '\n';
+        // std::cout << "rhs y: " << rhs.getY() << '\n';
         return true;
     }
     return false;
