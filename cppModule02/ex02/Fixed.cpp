@@ -20,7 +20,7 @@ Fixed::Fixed(float const floatNumber) : rawBits(std::roundf(floatNumber * (1 << 
 Fixed::Fixed(const Fixed &rhs)
 {
     std::cout << "Copy constructor called\n";
-    *this = rhs;
+    rawBits = rhs.getRawBits();
 }
 
 Fixed &Fixed::operator=(const Fixed &rhs)
@@ -79,12 +79,26 @@ Fixed Fixed::operator-(const Fixed &rhs) const
     return res;
 }
 
+/* By casting both operands to int64_t,
+you ensure that the multiplication is done using the larger data type,
+which can handle the full range of possible values without overflowing.
+
+For multiplication, you want to multiply the raw values of two fixed-point numbers,
+and then shift the result to the right to remove the extra fractional bits introduced by the
+multiplication. This is because when you multiply two fixed-point numbers,
+the number of fractional bits in the result is the sum of the fractional bits in the operands.
+*/
+
 Fixed Fixed::operator*(const Fixed &rhs) const
 {
     Fixed res;
     res.rawBits = (static_cast<int64_t>(rawBits) * static_cast<int64_t>(rhs.rawBits)) >> fractionalBits;
     return res;
 }
+
+/* Multiply the numerator by the scaling factor ((1 << fractionalBits)) to make sure it is bigger than
+the denominator, to ensure that you preserve the fractional part during the division
+*/
 
 Fixed Fixed::operator/(const Fixed &rhs) const
 {

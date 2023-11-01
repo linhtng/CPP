@@ -52,11 +52,11 @@ int main(void)
 
     std::cout << c << std::endl;
 
-    std::cout << Fixed::min(b, c) << std::endl;
+    std::cout << "Min of b and c is " << Fixed::min(b, c) << std::endl;
 
     std::cout << "\nSome extra test\n";
     testArithmeticOp(Fixed(2), Fixed(4));
-    testCompare(Fixed(42), Fixed(42));
+    testCompare(Fixed(-41), Fixed(-42));
 
     return 0;
 }

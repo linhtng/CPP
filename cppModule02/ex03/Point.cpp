@@ -6,10 +6,7 @@ Point::Point() : x(0), y(0) {}
 
 Point::Point(float const floatX, float const floatY) : x(floatX), y(floatY) {}
 
-Point::Point(const Point &rhs)
-{
-    *this = rhs;
-}
+Point::Point(const Point &rhs) : x(rhs.getX()), y(rhs.getY()) {}
 
 Point &Point::operator=(const Point &rhs)
 {
@@ -20,10 +17,7 @@ Point &Point::operator=(const Point &rhs)
 
 /* Destructor */
 
-Point::~Point()
-{
-    // std::cout << "Destructor called\n";
-}
+Point::~Point() {}
 
 /* CLASS PUBLIC METHODS */
 
@@ -40,12 +34,6 @@ Fixed const Point::getY() const
 bool Point::operator==(const Point &rhs) const
 {
     if (this->getX() == rhs.getX() && this->getY() == rhs.getY())
-    {
-        // std::cout << "lhs x: " << this->getX() << '\n';
-        // std::cout << "lhs y: " << this->getY() << '\n';
-        // std::cout << "rhs x: " << rhs.getX() << '\n';
-        // std::cout << "rhs y: " << rhs.getY() << '\n';
         return true;
-    }
     return false;
 }

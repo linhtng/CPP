@@ -19,7 +19,7 @@ Fixed::Fixed(float const floatNumber) : rawBits(std::roundf(floatNumber * (1 << 
 Fixed::Fixed(const Fixed &rhs)
 {
     std::cout << "Copy constructor called\n";
-    *this = rhs;
+    rawBits = rhs.getRawBits();
 }
 
 Fixed &Fixed::operator=(const Fixed &rhs)
