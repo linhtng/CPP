@@ -2,7 +2,7 @@ CFLAGS = c++ -Wall -Wextra -Werror -std=c++98
 
 NAME = OPEN
 
-SRC = main.cpp ClapTrap.cpp ClapTrap.hpp
+SRC = main.cpp ClapTrap.cpp
 
 OBJ_PATH = ./objects/
 OBJ		= $(SRC:.cpp=.o)
