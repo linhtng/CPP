@@ -69,12 +69,6 @@ void ClapTrap::takeDamage(unsigned int amount)
                   << " was defeated. Leave it alone!\n" RESET;
         return;
     }
-    if (energyPoints <= 0)
-    {
-        std::cout << YELLOW "ClapTrap " << name
-                  << "'s battery is burnt out. Leave it alone!\n" RESET;
-        return;
-    }
     hitPoints -= amount;
     if (hitPoints > 0)
         std::cout << RED "ClapTrap " << name << " take "
