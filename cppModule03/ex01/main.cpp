@@ -1,4 +1,4 @@
-#include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 #include <stdlib.h> /* srand, rand */
 #include <time.h>
 
@@ -7,8 +7,8 @@ int main(void)
     std::string trapNameA = "A";
     std::string trapNameB = "B";
     std::string target = "Boss";
-    ClapTrap A(trapNameA);
-    ClapTrap B(trapNameB);
+    ScavTrap A(trapNameA);
+    ScavTrap B(trapNameB);
 
     int damageAmount = 2;
     int repairAmount = 3;
@@ -16,24 +16,23 @@ int main(void)
     A.takeDamage(damageAmount);
     A.beRepaired(repairAmount);
 
-    for (int i = 0; i < 12; i++)
-        B.attack(target);
-    B.takeDamage(damageAmount);
-    B.beRepaired(repairAmount);
+    B.attack(target);
+    B.guardGate();
 
-    ClapTrap C(A);
+    ScavTrap C(A);
     srand(time(NULL));
 
     int randomDamageAmount = rand() % 20 + 1;
     std::cout << "randomDamageAmount: " << randomDamageAmount << '\n';
-    int randomRepairAmount = rand() % 10 + 1;
+    int randomRepairAmount = rand() % 50 + 1;
     std::cout << "randomRepairAmount: " << randomRepairAmount << '\n';
 
     C.attack(target);
     C.takeDamage(randomDamageAmount);
     C.beRepaired(randomRepairAmount);
+    C.guardGate();
 
-    ClapTrap D;
+    ScavTrap D;
     D = C;
 
     D.attack(target);

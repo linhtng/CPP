@@ -1,6 +1,8 @@
 #ifndef SCAVTRAP_HPP
 #define SCAVTRAP_HPP
 
+#define CYAN "\033[36m"
+
 #include "ClapTrap.hpp"
 
 class ScavTrap : public ClapTrap

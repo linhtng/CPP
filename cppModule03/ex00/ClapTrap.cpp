@@ -20,7 +20,10 @@ ClapTrap::ClapTrap(std::string name) : name(name),
 ClapTrap::ClapTrap(const ClapTrap &rhs)
 {
     std::cout << "Copy constructor called\n";
-    *this = rhs;
+    name = rhs.name;
+    hitPoints = rhs.hitPoints;
+    energyPoints = rhs.energyPoints;
+    attackDamage = rhs.attackDamage;
 }
 
 ClapTrap &ClapTrap::operator=(const ClapTrap &rhs)
@@ -64,12 +67,6 @@ void ClapTrap::takeDamage(unsigned int amount)
     {
         std::cout << YELLOW "ClapTrap " << name
                   << " was defeated. Leave it alone!\n" RESET;
-        return;
-    }
-    if (energyPoints <= 0)
-    {
-        std::cout << YELLOW "ClapTrap " << name
-                  << "'s battery is burnt out. Leave it alone!\n" RESET;
         return;
     }
     hitPoints -= amount;

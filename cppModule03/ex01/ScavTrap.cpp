@@ -5,25 +5,31 @@
 ScavTrap::ScavTrap() : ClapTrap()
 {
     std::cout << "ScavTrap's default constructor called.\n";
+    hitPoints = 100;
+    energyPoints = 50;
+    attackDamage = 20;
 }
 
-ScavTrap::ScavTrap(std::string name) : name(name),
-                                       hitPoints(10),
-                                       energyPoints(10),
-                                       attackDamage(0)
+ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 {
     std::cout << "ScavTrap " << name << " is constructed.\n";
+    hitPoints = 100;
+    energyPoints = 50;
+    attackDamage = 20;
 }
 
 ScavTrap::ScavTrap(const ScavTrap &rhs)
 {
-    std::cout << "Copy constructor called\n";
-    *this = rhs;
+    std::cout << "ScavTrap's copy constructor called\n";
+    name = rhs.name;
+    hitPoints = rhs.hitPoints;
+    energyPoints = rhs.energyPoints;
+    attackDamage = rhs.attackDamage;
 }
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &rhs)
 {
-    std::cout << "Copy assignment operator called\n";
+    std::cout << "ScavTrap's copy assignment operator called\n";
     name = rhs.name;
     hitPoints = rhs.hitPoints;
     energyPoints = rhs.energyPoints;
@@ -56,50 +62,9 @@ void ScavTrap::attack(const std::string &target)
     energyPoints--;
 }
 
-void ScavTrap::takeDamage(unsigned int amount)
+void ScavTrap::guardGate()
 {
-    if (hitPoints <= 0)
-    {
-        std::cout << YELLOW "ScavTrap " << name
-                  << " was defeated. Leave it alone!\n" RESET;
-        return;
-    }
-    if (energyPoints <= 0)
-    {
-        std::cout << YELLOW "ScavTrap " << name
-                  << "'s battery is burnt out. Leave it alone!\n" RESET;
-        return;
-    }
-    hitPoints -= amount;
-    if (hitPoints > 0)
-        std::cout << RED "ScavTrap " << name << " take "
-                  << amount << " point of damage. "
-                  << "Its HP is now " << hitPoints << RESET << '\n';
-    else
-        std::cout << RED2 "ScavTrap " << name << " take "
-                  << amount << " point of damage. "
-                  << "It is defeated!" << RESET << '\n';
-}
-
-void ScavTrap::beRepaired(unsigned int amount)
-{
-    if (hitPoints <= 0)
-    {
-        std::cout << YELLOW "ScavTrap " << name
-                  << " was defeated beyond healing!\n" RESET;
-        return;
-    }
-    if (energyPoints <= 0)
-    {
-        std::cout << YELLOW "ScavTrap " << name << " can't heal itself. ";
-        std::cout << "Energy level critical!\n" RESET;
-        return;
-    }
-    hitPoints += amount;
-    energyPoints--;
-    std::cout << GREEN "ScavTrap " << name << " repair itself "
-              << amount << " hit points back. "
-              << "Its HP is now " << hitPoints << RESET << '\n';
+    std::cout << CYAN "ScavTrap " << name << " is now in Gate keeper mode.\n" RESET;
 }
 
 /* Private */
