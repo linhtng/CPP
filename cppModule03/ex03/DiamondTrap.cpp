@@ -2,7 +2,7 @@
 
 /* Public */
 
-DiamondTrap::DiamondTrap() : FragTrap(), ScavTrap()
+DiamondTrap::DiamondTrap()
 {
     std::cout << "DiamondTrap's default constructor called.\n";
     hitPoints = FragTrap::hitPoints;
@@ -10,14 +10,16 @@ DiamondTrap::DiamondTrap() : FragTrap(), ScavTrap()
     attackDamage = FragTrap::attackDamage;
 }
 
-DiamondTrap::DiamondTrap(std::string name) : FragTrap(name), ScavTrap(name)
+DiamondTrap::DiamondTrap(std::string name) : ClapTrap(name + "_clap_name"), FragTrap(name), ScavTrap(name)
 {
-    std::cout << "DiamondTrap " << name << " is constructed.\n";
     this->name = name;
-    ClapTrap::name = name + "_clap_name";
     hitPoints = FragTrap::hitPoints;
     energyPoints = ScavTrap::energyPoints;
     attackDamage = FragTrap::attackDamage;
+    std::cout << "DiamondTrap " << name << " is constructed. ";
+    std::cout << CYAN "My HP: " << hitPoints
+              << " My EP: " << energyPoints
+              << " My Damage: " << attackDamage << RESET << '\n';
 }
 
 DiamondTrap::DiamondTrap(const DiamondTrap &rhs)
@@ -32,11 +34,15 @@ DiamondTrap::DiamondTrap(const DiamondTrap &rhs)
 
 DiamondTrap &DiamondTrap::operator=(const DiamondTrap &rhs)
 {
-    std::cout << "DiamondTrap's copy assignment operator called\n";
     name = rhs.name;
+    ClapTrap::name = name + "_clap_name";
     hitPoints = rhs.hitPoints;
     energyPoints = rhs.energyPoints;
     attackDamage = rhs.attackDamage;
+    std::cout << "DiamondTrap " << name << " is copied via copy assignment operator. ";
+    std::cout << CYAN "My HP: " << hitPoints
+              << " My EP: " << energyPoints
+              << " My Damage: " << attackDamage << RESET << '\n';
     return *this;
 }
 
@@ -63,5 +69,3 @@ void DiamondTrap::my_stats()
               << " My EP: " << energyPoints
               << " My Damage: " << attackDamage << RESET << '\n';
 }
-
-/* Private */

@@ -18,6 +18,11 @@ public:
     void highFivesGuys();
     int getDamage();
     void my_stats();
+
+protected:
+    int hitPoints;
+    int energyPoints;
+    int attackDamage;
 };
 
 #endif

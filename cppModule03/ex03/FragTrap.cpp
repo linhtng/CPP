@@ -8,7 +8,6 @@ FragTrap::FragTrap() : ClapTrap()
     hitPoints = 100;
     energyPoints = 100;
     attackDamage = 30;
-    this->my_stats();
 }
 
 FragTrap::FragTrap(std::string name) : ClapTrap(name)
@@ -17,7 +16,6 @@ FragTrap::FragTrap(std::string name) : ClapTrap(name)
     hitPoints = 100;
     energyPoints = 100;
     attackDamage = 30;
-    this->my_stats();
 }
 
 FragTrap::FragTrap(const FragTrap &rhs)
