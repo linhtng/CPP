@@ -2,9 +2,10 @@
 
 /* Public */
 
-WrongCat::WrongCat() : WrongAnimal("WrongCat")
+WrongCat::WrongCat()
 {
     std::cout << "WrongCat's default constructor called\n";
+    type = "WrongCat";
 }
 
 WrongCat::WrongCat(const WrongCat &rhs)

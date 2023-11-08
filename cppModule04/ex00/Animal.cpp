@@ -7,8 +7,6 @@ Animal::Animal()
     std::cout << "Animal's default constructor called\n";
 }
 
-Animal::Animal(std::string type) : type(type) {}
-
 Animal::Animal(const Animal &rhs)
 {
     std::cout << "Animal's copy constructor called\n";

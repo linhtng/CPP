@@ -2,9 +2,10 @@
 
 /* Public */
 
-Dog::Dog() : Animal("Dog")
+Dog::Dog()
 {
     std::cout << "Dog's default constructor called\n";
+    type = "Dog";
 }
 
 Dog::Dog(const Dog &rhs)

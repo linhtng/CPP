@@ -7,10 +7,12 @@ class Brain
 {
 public:
     Brain();
-    Brain(std::string type);
     Brain(const Brain &other);
     Brain &operator=(const Brain &rhs);
     virtual ~Brain();
+
+    void getIdea(int ideaID) const;
+    std::string setIdea(int ideaID, std::string idea);
 
 private:
     std::string ideas[100];
