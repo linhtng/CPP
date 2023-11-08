@@ -7,8 +7,6 @@ WrongAnimal::WrongAnimal()
     std::cout << "WrongAnimal's default constructor called\n";
 }
 
-WrongAnimal::WrongAnimal(std::string type) : type(type) {}
-
 WrongAnimal::WrongAnimal(const WrongAnimal &rhs)
 {
     std::cout << "WrongAnimal's copy constructor called\n";

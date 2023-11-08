@@ -4,10 +4,8 @@
 
 Animal::Animal()
 {
-    std::cout << "Animal's default constructor called\n";
+    std::cout << CYAN "Animal's default constructor called\n" RESET;
 }
-
-Animal::Animal(std::string type) : type(type) {}
 
 Animal::Animal(const Animal &rhs)
 {
@@ -24,7 +22,7 @@ Animal &Animal::operator=(const Animal &rhs)
 
 Animal::~Animal()
 {
-    std::cout << "Animal destructor called.\n";
+    std::cout << RED "Animal destructor called.\n" RESET;
 }
 
 void Animal::makeSound() const
