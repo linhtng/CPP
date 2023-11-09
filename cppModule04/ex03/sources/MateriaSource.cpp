@@ -32,8 +32,7 @@ void MateriaSource::learnMateria(AMateria *param)
         if (!learnedMateria[i])
         {
             learnedMateria[i] = param;
-            if (i == 3)
-                return;
+            return;
         }
     }
     std::cout << "No capacity left to learn new Materia.\n";

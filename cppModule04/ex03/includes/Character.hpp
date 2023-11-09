@@ -8,6 +8,7 @@ class Character
 {
 private:
     AMateria *inventory[maxMaterias] = {};
+    AMateria *unequipInventory[maxMaterias] = {};
     std::string name;
 
 public:
