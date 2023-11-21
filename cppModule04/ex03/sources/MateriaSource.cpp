@@ -36,6 +36,11 @@ MateriaSource::~MateriaSource()
 
 void MateriaSource::learnMateria(AMateria *param)
 {
+    if (!param)
+    {
+        std::cout << "Error 404. Materia to learn not found!\n";
+        return;
+    }
     for (int i = 0; i < maxMaterias; i++)
     {
         if (!learnedMateria[i])
@@ -45,7 +50,8 @@ void MateriaSource::learnMateria(AMateria *param)
             return;
         }
     }
-    std::cout << "No capacity left to learn new Materia.\n";
+    std::cout << "No capacity left to learn new Materia " << param->getType() << '\n';
+    delete param;
 }
 
 AMateria *MateriaSource::createMateria(std::string const &type)

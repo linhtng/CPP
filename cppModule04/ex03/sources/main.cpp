@@ -3,13 +3,12 @@
 #include "Cure.hpp"
 #include "Ice.hpp"
 
-int main()
+void subjectTest()
 {
     IMateriaSource *src = new MateriaSource();
     src->learnMateria(new Ice());
     src->learnMateria(new Cure());
 
-    new Character("me");
     ICharacter *me = new Character("me");
 
     AMateria *tmp;
@@ -26,6 +25,21 @@ int main()
     delete bob;
     delete me;
     delete src;
+}
+
+void materiaSourceTest()
+{
+    IMateriaSource *src = new MateriaSource();
+    for (int i = 0; i < 5; i++)
+        src->learnMateria(new Ice());
+    src->learnMateria(new Cure());
+    delete src;
+}
+
+int main()
+{
+    subjectTest();
+    materiaSourceTest();
 
     return 0;
 }
