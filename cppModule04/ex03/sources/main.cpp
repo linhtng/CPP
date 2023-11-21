@@ -9,6 +9,7 @@ int main()
     src->learnMateria(new Ice());
     src->learnMateria(new Cure());
 
+    new Character("me");
     ICharacter *me = new Character("me");
 
     AMateria *tmp;

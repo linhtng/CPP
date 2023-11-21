@@ -9,23 +9,20 @@ MateriaSource::MateriaSource()
         learnedMateria[i] = NULL;
 }
 
-MateriaSource::MateriaSource(const MateriaSource &rhs)
+MateriaSource::MateriaSource(const MateriaSource &src)
 {
     // std::cout << "MateriaSource's copy constructor called\n";
-    for (int i = 0; i < maxMaterias; i++)
-    {
-        delete learnedMateria[i];
-        learnedMateria[i] = createMateria(rhs.learnedMateria[i]->getType());
-    }
+    *this = src;
 }
 
-MateriaSource &MateriaSource::operator=(const MateriaSource &rhs)
+MateriaSource &MateriaSource::operator=(const MateriaSource &src)
 {
     // std::cout << "MateriaSource's copy assignment operator called\n";
     for (int i = 0; i < maxMaterias; i++)
     {
         delete learnedMateria[i];
-        learnedMateria[i] = createMateria(rhs.learnedMateria[i]->getType());
+        if (src.learnedMateria[i])
+            learnedMateria[i] = src.learnedMateria[i]->clone();
     }
     return *this;
 }
@@ -44,6 +41,7 @@ void MateriaSource::learnMateria(AMateria *param)
         if (!learnedMateria[i])
         {
             learnedMateria[i] = param;
+            // std::cout << param->getType() << " is learned in slot " << i << '\n';
             return;
         }
     }
@@ -55,7 +53,10 @@ AMateria *MateriaSource::createMateria(std::string const &type)
     for (int i = 0; i < maxMaterias; i++)
     {
         if (learnedMateria[i] && learnedMateria[i]->getType() == type)
+        {
+            // std::cout << "New materia " << type << " is created.\n";
             return learnedMateria[i]->clone();
+        }
     }
     return 0;
 }

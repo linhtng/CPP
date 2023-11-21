@@ -62,6 +62,7 @@ void Character::equip(AMateria *m)
         if (!inventory[i])
         {
             inventory[i] = m;
+            // std::cout << "Materia " << m->getType() << " is equipped in slot " << i << '\n';
             return;
         }
     }

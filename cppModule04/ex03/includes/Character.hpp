@@ -1,10 +1,10 @@
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
 
-#include <iostream>
 #include "ICharacter.hpp"
+#include "AMateria.hpp"
 
-class Character
+class Character : public ICharacter
 {
 private:
     AMateria *inventory[maxMaterias];
@@ -15,7 +15,7 @@ public:
     Character(std::string const &name);
     Character(const Character &src);
     Character &operator=(const Character &src);
-    ~Character() {}
+    ~Character();
 
     std::string const &getName() const;
     void equip(AMateria *m);

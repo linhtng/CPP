@@ -1,6 +1,6 @@
 #include "Cure.hpp"
 
-Cure::Cure() : AMateria("Cure")
+Cure::Cure() : AMateria("cure")
 {
     // std::cout << CYAN "Cure's default constructor called\n" RESET;
 }
@@ -14,7 +14,7 @@ Cure::Cure(const Cure &src)
 Cure &Cure::operator=(const Cure &src)
 {
     // std::cout << "Cure's copy assignment operator called\n";
-    type = "cure";
+    type = src.getType();
     return *this;
 }
 

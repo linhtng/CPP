@@ -21,6 +21,8 @@ AMateria::AMateria(const AMateria &src)
 AMateria &AMateria::operator=(const AMateria &src)
 {
     // std::cout << "AMateria's copy assignment operator called\n";
+    if (this != &src)
+        this->type = src.getType();
     return *this;
 }
 
@@ -36,5 +38,6 @@ std::string const &AMateria::getType() const
 
 void AMateria::use(ICharacter &target)
 {
-    std::cout << "AMateria use(less) function is called.\n";
+    std::cout << "AMateria use(less) function is called on target ";
+    std::cout << target.getName() << '\n';
 }
