@@ -2,6 +2,7 @@
 #define AMATERIA_HPP
 
 #include <iostream>
+#include <string>
 #include "ICharacter.hpp"
 #define RED "\e[91m"
 #define PINK "\e[35m"

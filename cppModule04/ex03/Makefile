@@ -1,12 +1,20 @@
-CFLAGS = c++ -Wall -Wextra -Werror -std=c++98 -Iincludes
+CFLAGS = c++ -Wall -Wextra -Werror -std=c++98
 #DEBUG = -fsanitize=address
+
+INC_PATH	= includes/
+INC			= -I $(INC_PATH)
 
 NAME = intercap
 
 SRC = main.cpp \
-	
+	AMateria.cpp \
+	Character.cpp \
+	Cure.cpp \
+	Ice.cpp \
+	MateriaSource.cpp \
+	main.cpp
 
-OBJ_PATH = ./objects/
+OBJ_PATH = objects/
 OBJ		= $(SRC:.cpp=.o)
 OBJS	= $(addprefix $(OBJ_PATH), $(OBJ))
 
@@ -19,10 +27,10 @@ $(OBJ_PATH):
 	mkdir -p $(OBJ_PATH)
 
 $(OBJ_PATH)%.o: $(SRCFD)%.cpp
-	$(CFLAGS) $(DEBUG) -c $< -o $@
+	$(CFLAGS) $(DEBUG) -c $< -o $@ $(INC)
 
 $(NAME): $(OBJ_PATH) $(OBJS)
-	$(CFLAGS) $(OBJS) $(DEBUG) -o $@
+	$(CFLAGS) $(OBJS) $(DEBUG) -o $@ $(INC)
 	
 clean:
 	rm -rf $(OBJ_PATH)

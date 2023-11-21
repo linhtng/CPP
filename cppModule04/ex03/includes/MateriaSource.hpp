@@ -7,12 +7,12 @@
 class MateriaSource : public IMateriaSource
 {
 private:
-    AMateria *learnedMateria[maxMaterias] = {};
+    AMateria *learnedMateria[maxMaterias];
 
 public:
     ~MateriaSource();
-    virtual void learnMateria(AMateria *param);
-    virtual AMateria *createMateria(std::string const &type);
+    void learnMateria(AMateria *param);
+    AMateria *createMateria(std::string const &type);
 };
 
 #endif

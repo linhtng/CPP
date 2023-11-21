@@ -2,13 +2,12 @@
 #define CHARACTER_HPP
 
 #include <iostream>
-#include "AMateria.hpp"
+#include "ICharacter.hpp"
 
 class Character
 {
 private:
-    AMateria *inventory[maxMaterias] = {};
-    AMateria *unequipInventory[maxMaterias] = {};
+    AMateria *inventory[maxMaterias];
     std::string name;
 
 public:
