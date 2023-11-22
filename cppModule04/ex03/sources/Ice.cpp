@@ -16,7 +16,9 @@ Ice::Ice(const Ice &src)
 Ice &Ice::operator=(const Ice &src)
 {
     // std::cout << "Ice's copy assignment operator called\n";
-    type = src.getType();
+    type = "ice";
+    if (src.getType() != "ice")
+        std::cout << "You are assigning a different type of AMateria to an Ice. Please don't!\n";
     return *this;
 }
 

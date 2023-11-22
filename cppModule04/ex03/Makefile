@@ -1,5 +1,5 @@
-CFLAGS = c++ -Wall -Wextra -Werror -std=c++98 -Iincludes
-#DEBUG = -fsanitize=address
+CFLAGS = c++ -Wall -Wextra -Werror -std=c++98 -Iincludes -g3
+# DEBUG = -fsanitize=address
 
 NAME = intercap
 

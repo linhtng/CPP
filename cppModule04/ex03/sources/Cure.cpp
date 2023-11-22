@@ -14,7 +14,9 @@ Cure::Cure(const Cure &src)
 Cure &Cure::operator=(const Cure &src)
 {
     // std::cout << "Cure's copy assignment operator called\n";
-    type = src.getType();
+    type = "cure";
+    if (src.getType() != "cure")
+        std::cout << "You are assigning a different type of AMateria to a Cure. Please don't!\n";
     return *this;
 }
 

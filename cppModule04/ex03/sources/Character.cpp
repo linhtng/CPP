@@ -5,6 +5,7 @@ Character::Character()
     // std::cout << CYAN "Character's default constructor called\n" RESET;
     for (int i = 0; i < maxMaterias; i++)
         inventory[i] = NULL;
+    unequipDone = false;
 }
 
 Character::Character(std::string const &name) : name(name)
@@ -12,17 +13,15 @@ Character::Character(std::string const &name) : name(name)
     // std::cout << CYAN "Character's parameter constructor called\n" RESET;
     for (int i = 0; i < maxMaterias; i++)
         inventory[i] = NULL;
+    unequipDone = false;
 }
 
-Character::Character(const Character &src) : name(src.getName())
+Character::Character(const Character &src)
 {
     // std::cout << "Character's copy constructor called\n";
     for (int i = 0; i < maxMaterias; i++)
-    {
-        delete inventory[i];
-        if (src.inventory[i])
-            inventory[i] = src.inventory[i]->clone();
-    }
+        inventory[i] = NULL;
+    *this = src;
 }
 
 Character &Character::operator=(const Character &src)
@@ -31,17 +30,22 @@ Character &Character::operator=(const Character &src)
     name = src.getName();
     for (int i = 0; i < maxMaterias; i++)
     {
-        delete inventory[i];
+        if (inventory[i])
+            delete inventory[i];
         if (src.inventory[i])
             inventory[i] = src.inventory[i]->clone();
     }
+    unequipDone = false;
     return *this;
 }
 
 Character::~Character()
 {
     for (int i = 0; i < maxMaterias; i++)
-        delete inventory[i];
+    {
+        if (inventory[i])
+            delete inventory[i];
+    }
     // std::cout << RED "Character destructor called.\n" RESET;
 }
 
@@ -67,7 +71,6 @@ void Character::equip(AMateria *m)
         }
     }
     std::cout << "No inventory capacity left to equip more Materia.\n";
-    // delete m;
 }
 
 void Character::unequip(int idx)
@@ -80,9 +83,19 @@ void Character::unequip(int idx)
     }
     if (!inventory[idx])
     {
-        std::cout << "Error 404. Material to unequip not found!\n";
+        std::cout << "Error 404. Material to unequip not found at slot " << idx << '\n';
         return;
     }
+    std::string userInput;
+    userInput = unequipVerify(idx);
+    if (userInput.empty() || userInput != "Y")
+    {
+        std::cout << RED "Unequip operation aborted. Save the addresses before calling unequip()!\n" RESET;
+        return;
+    }
+    std::cout << "Materia " << inventory[idx]->getType() << " is unequipped in slot " << idx << '\n';
+    inventory[idx] = NULL;
+    unequipDone = true;
 }
 
 void Character::use(int idx, ICharacter &target)
@@ -95,8 +108,28 @@ void Character::use(int idx, ICharacter &target)
     }
     if (!inventory[idx])
     {
-        std::cout << "Error 404. Material to use not found!\n";
+        std::cout << "Error 404. Material to use not found at slot " << idx << '\n';
         return;
     }
-    inventory[idx]->use(target);
+    ICharacter *nullCheck = &target;
+    if (nullCheck)
+        inventory[idx]->use(target);
+    else
+        std::cout << "Error 404. Target not found in use()!\n";
+}
+
+std::string Character::unequipVerify(int idx)
+{
+    std::cout << RED "Did you save the address of character " << this->getName() << "'s Materia number "
+              << idx << " before calling unequip(): [Y/n]\n" RESET;
+    std::string input;
+    std::getline(std::cin, input);
+    if (std::cin.eof())
+        return ("");
+    return input;
+}
+
+bool Character::unequipCheck()
+{
+    return unequipDone;
 }

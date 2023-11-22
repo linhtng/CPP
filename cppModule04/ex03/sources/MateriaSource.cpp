@@ -64,5 +64,6 @@ AMateria *MateriaSource::createMateria(std::string const &type)
             return learnedMateria[i]->clone();
         }
     }
+    std::cout << "Type " << type << " hasn't been learnt, so can't be created.\n";
     return 0;
 }

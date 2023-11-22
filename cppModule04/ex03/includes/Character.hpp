@@ -3,12 +3,14 @@
 
 #include "ICharacter.hpp"
 #include "AMateria.hpp"
+#include <stddef.h>
 
 class Character : public ICharacter
 {
 private:
     AMateria *inventory[maxMaterias];
     std::string name;
+    bool unequipDone;
 
 public:
     Character();
@@ -21,6 +23,8 @@ public:
     void equip(AMateria *m);
     void unequip(int idx);
     void use(int idx, ICharacter &target);
+    std::string unequipVerify(int idx);
+    bool unequipCheck();
 };
 
 #endif
