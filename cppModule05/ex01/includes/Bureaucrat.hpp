@@ -5,8 +5,7 @@
 #include <exception>
 
 #define RED "\e[91m"
-#define PINK "\e[35m"
-#define CYAN "\033[36m"
+#define PURPLE "\e[35m"
 #define RESET "\e[0m"
 
 class Bureaucrat

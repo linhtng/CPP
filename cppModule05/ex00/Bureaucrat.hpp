@@ -17,7 +17,6 @@ public:
     Bureaucrat &operator=(const Bureaucrat &src);
     ~Bureaucrat();
 
-    void makeSound() const;
     std::string getName() const;
     int getGrade() const;
     void incrementGrade();

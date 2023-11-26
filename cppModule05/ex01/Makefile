@@ -1,4 +1,4 @@
-CFLAGS = c++ -Wall -Wextra -Werror -std=c++98 -Iincludes -g3
+CFLAGS = c++ -Wall -Wextra -Werror -std=c++98 -Iincludes
 # DEBUG = -fsanitize=address
 
 NAME = BureaucratForm

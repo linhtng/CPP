@@ -1,4 +1,5 @@
 #include "Bureaucrat.hpp"
+
 Bureaucrat::Bureaucrat() : name("Default name"), grade(1) {}
 
 Bureaucrat::Bureaucrat(const std::string &name, int grade) : name(name)
