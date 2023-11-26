@@ -20,7 +20,7 @@ Dog &Dog::operator=(const Dog &rhs)
 {
     std::cout << CYAN "Dog's copy assignment operator called\n" RESET;
     type = rhs.type;
-    dogBrain = new Brain(*rhs.dogBrain);
+    dogBrain = rhs.dogBrain;
     return *this;
 }
 

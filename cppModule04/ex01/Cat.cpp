@@ -20,7 +20,7 @@ Cat &Cat::operator=(const Cat &rhs)
 {
     std::cout << CYAN "Cat's copy assignment operator called\n" RESET;
     type = rhs.type;
-    catBrain = new Brain(*rhs.catBrain);
+    catBrain = rhs.catBrain;
     return *this;
 }
 
