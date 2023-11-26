@@ -23,5 +23,6 @@ int main(void)
     B.whoAmI();
     B.highFivesGuys();
 
+    DiamondTrap C = B;
     return 0;
 }

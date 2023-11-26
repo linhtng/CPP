@@ -30,23 +30,23 @@ void moreTestDeepCopy()
 
 int main()
 {
-    /* std::cout << "Subject test 1\n";
-    const Animal *j = new Dog();
-    const Animal *i = new Cat();
-    delete j; // should not create a leak
-    delete i; */
+    // std::cout << "Subject test 1\n";
+    // const Animal *j = new Dog();
+    // const Animal *i = new Cat();
+    // delete j; // should not create a leak
+    // delete i;
 
-    /* std::cout << "Subject test 2\n";
-    int arrLen = 6;
-    const Animal *arr[arrLen];
-    for (int i = 0; i < arrLen / 2; i++)
-        arr[i] = new Dog;
-    for (int i = arrLen / 2; i < arrLen; i++)
-        arr[i] = new Cat;
-    for (int i = 0; i < arrLen; i++)
-        delete arr[i]; */
+    // std::cout << "Subject test 2\n";
+    // int arrLen = 6;
+    // const Animal *arr[arrLen];
+    // for (int i = 0; i < arrLen / 2; i++)
+    //     arr[i] = new Dog;
+    // for (int i = arrLen / 2; i < arrLen; i++)
+    //     arr[i] = new Cat;
+    // for (int i = 0; i < arrLen; i++)
+    //     delete arr[i];
 
-    testDeepCopy();
+    // testDeepCopy();
     moreTestDeepCopy();
 
     return 0;
