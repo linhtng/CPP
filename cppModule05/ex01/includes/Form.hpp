@@ -5,6 +5,13 @@
 #include <exception>
 #include "Bureaucrat.hpp"
 
+#define RED "\e[91m"
+#define PURPLE "\e[35m"
+#define CYAN "\033[36m"
+#define RESET "\e[0m"
+
+class Bureaucrat;
+
 class Form
 {
 public:

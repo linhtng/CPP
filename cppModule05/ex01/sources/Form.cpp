@@ -1,7 +1,7 @@
 #include "Form.hpp"
 
 Form::Form() : name("Default name"), signedStatus(false),
-               gradeToSign(1), gradeToExecute(1) {}
+               gradeToSign(150), gradeToExecute(150) {}
 
 Form::Form(const std::string &name, const int gradeToSign, const int gradeToExecute)
     : name(name), signedStatus(false),
@@ -57,13 +57,17 @@ int Form::getGradeToExecute() const
 
 void Form::beSigned(const Bureaucrat &bureaucrat)
 {
+    if (bureaucrat.getGrade() <= gradeToSign)
+        signedStatus = true;
+    else
+        throw GradeTooLowException();
 }
 
 std::ostream &operator<<(std::ostream &outputStream, Form const &src)
 {
-    outputStream << "Form " << src.getName()
+    outputStream << CYAN "Form " << src.getName()
                  << (src.getSignedStatus() ? " is signed" : " is unsigned")
                  << ". Grade to sign: " << src.getGradeToSign()
-                 << ". Grade to execute: " << src.getGradeToExecute() << '\n';
+                 << ". Grade to execute: " << src.getGradeToExecute() << "\n" RESET;
     return outputStream;
 }

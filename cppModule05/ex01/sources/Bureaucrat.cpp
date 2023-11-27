@@ -23,12 +23,12 @@ Bureaucrat::~Bureaucrat() {}
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-    return "Grade is too high. Must be between 1 and 150.";
+    return RED "Grade is too high. Must be between 1 and 150." RESET;
 }
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
-    return "Grade is too low. Must be between 1 and 150.";
+    return PURPLE "Grade is too low. Must be between 1 and 150." RESET;
 }
 
 int Bureaucrat::getGrade() const
@@ -59,4 +59,19 @@ std::ostream &operator<<(std::ostream &outputStream, Bureaucrat const &src)
 {
     outputStream << src.getName() << ", bureaucrat grade " << src.getGrade() << ".\n";
     return outputStream;
+}
+
+void Bureaucrat::signForm(Form &form) const
+{
+    try
+    {
+        form.beSigned(*this);
+        std::cout << getName() << " signed " << form.getName() << '\n';
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << RED << getName() << " couldn't sign " << form.getName()
+                  << " because " << e.what() << '\n'
+                  << RESET;
+    }
 }

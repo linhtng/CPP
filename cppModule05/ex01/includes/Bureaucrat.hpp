@@ -1,12 +1,9 @@
 #ifndef BUREAUCRAT_HPP
 #define BUREAUCRAT_HPP
 
-#include <iostream>
-#include <exception>
+#include "Form.hpp"
 
-#define RED "\e[91m"
-#define PURPLE "\e[35m"
-#define RESET "\e[0m"
+class Form;
 
 class Bureaucrat
 {
@@ -17,11 +14,12 @@ public:
     Bureaucrat &operator=(const Bureaucrat &src);
     ~Bureaucrat();
 
-    void makeSound() const;
     std::string getName() const;
     int getGrade() const;
     void incrementGrade();
     void decrementGrade();
+
+    void signForm(Form &form) const;
 
     class GradeTooHighException : public std::exception
     {
