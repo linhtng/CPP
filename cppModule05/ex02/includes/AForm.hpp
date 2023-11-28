@@ -4,12 +4,17 @@
 #include <iostream>
 #include <exception>
 #include <fstream>
+
 #include "Bureaucrat.hpp"
 
-#define RED "\e[91m"
+#define RESET "\e[0m"
+#define DRED "\e[31m"
+#define GREEN "\e[32m"
+#define YELLOW "\e[33m"
+#define BLUE "\e[34m"
 #define PURPLE "\e[35m"
 #define CYAN "\033[36m"
-#define RESET "\e[0m"
+#define RED "\e[91m"
 
 class Bureaucrat;
 
@@ -42,8 +47,13 @@ public:
     public:
         const char *what() const throw();
     };
+    class UnsignedFormException : public std::exception
+    {
+    public:
+        const char *what() const throw();
+    };
 
-    // pure virtual function:
+    // Pure virtual function to be overridden by concrete classes
     virtual void execute(const Bureaucrat &executor) const = 0;
 
 private:

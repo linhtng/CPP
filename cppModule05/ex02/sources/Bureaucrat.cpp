@@ -23,12 +23,12 @@ Bureaucrat::~Bureaucrat() {}
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
-    return RED "Grade is too high. Must be between 1 and 150." RESET;
+    return RED "Bureaucrat grade is too high. Must be between 1 and 150." RESET;
 }
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()
 {
-    return PURPLE "Grade is too low. Must be between 1 and 150." RESET;
+    return PURPLE "Bureaucrat grade is too low. Must be between 1 and 150." RESET;
 }
 
 int Bureaucrat::getGrade() const
@@ -61,17 +61,33 @@ std::ostream &operator<<(std::ostream &outputStream, Bureaucrat const &src)
     return outputStream;
 }
 
-void Bureaucrat::signForm(Form &form) const
+void Bureaucrat::signForm(AForm &form) const
 {
     try
     {
         form.beSigned(*this);
-        std::cout << getName() << " signed " << form.getName() << '\n';
+        std::cout << GREEN << getName() << " signed " << form.getName() << '\n'
+                  << RESET;
     }
     catch (const std::exception &e)
     {
         std::cout << RED << getName() << " couldn't sign " << form.getName()
                   << " because " << e.what() << '\n'
                   << RESET;
+    }
+}
+
+void Bureaucrat::executeForm(const AForm &form) const
+{
+    try
+    {
+        form.execute(*this);
+        std::cout << GREEN << getName() << " executed " << form.getName() << '\n'
+                  << RESET;
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << getName() << " couldn't execute " << form.getName()
+                  << " because " << e.what() << '\n';
     }
 }

@@ -16,23 +16,10 @@ public:
     // getters:
     std::string getTarget() const;
 
-    class GradeTooHighException : public std::exception
-    {
-    public:
-        const char *what() const throw();
-    };
-    class GradeTooLowException : public std::exception
-    {
-    public:
-        const char *what() const throw();
-    };
-
     void execute(const Bureaucrat &executor) const;
 
 private:
     std::string target;
 };
-
-std::ostream &operator<<(std::ostream &o, ShrubberyCreationForm const &src);
 
 #endif

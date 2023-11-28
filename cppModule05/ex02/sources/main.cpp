@@ -1,32 +1,41 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
-void testForm()
+void testShrubberyCreationForm()
 {
     try
     {
-        Form validForm("Valid", 1, 150);
-        // Form invalidForm("Invalid", 0, 1);
-        //  Form invalidForm2("Invalid", 1, 151);
+        Bureaucrat bureaucrat("John", 150);
+
+        // Create forms
+        ShrubberyCreationForm shrubberyForm("home");
+        std::cout << shrubberyForm << '\n';
+
+        bureaucrat.signForm(shrubberyForm); // comment this to throw UnsignedFormException
+
+        bureaucrat.executeForm(shrubberyForm);
     }
-    catch (std::exception &e)
+    catch (const std::exception &e)
     {
-        std::cerr << "Exception caught: " << e.what() << '\n';
+        std::cerr << "Exception: " << e.what() << '\n';
     }
 }
 
-void testSignForm()
+void testRobotomyRequestForm()
 {
     try
     {
         Bureaucrat bureaucrat("John", 5);
         std::cout << bureaucrat << '\n';
 
-        Form formA("Test", 42, 42);
-        std::cout << formA << '\n';
+        RobotomyRequestForm formR("Robot power");
+        // std::cout << formR << '\n';
 
-        bureaucrat.signForm(formA);
-        std::cout << formA << '\n';
+        formR.execute(bureaucrat);
+        std::cout << formR << '\n';
     }
     catch (std::exception &e)
     {
@@ -41,11 +50,11 @@ void testSignFormException()
         Bureaucrat bureaucrat("John", 5);
         std::cout << bureaucrat << '\n';
 
-        Form formA("Test", 1, 42);
-        std::cout << formA << '\n';
+        PresidentialPardonForm formP("Test");
+        // std::cout << formP << '\n';
 
-        bureaucrat.signForm(formA);
-        std::cout << formA << '\n';
+        formP.execute(bureaucrat);
+        std::cout << formP << '\n';
     }
     catch (std::exception &e)
     {
@@ -55,9 +64,9 @@ void testSignFormException()
 
 int main()
 {
-    // testForm();
-    testSignForm();
-    testSignFormException();
+    testShrubberyCreationForm();
+    // testSignForm();
+    // testSignFormException();
 
     return 0;
 }

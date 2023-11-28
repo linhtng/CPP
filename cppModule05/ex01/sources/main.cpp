@@ -22,7 +22,7 @@ void testSignForm()
         Bureaucrat bureaucrat("John", 5);
         std::cout << bureaucrat << '\n';
 
-        Form formA("Test", 42, 42);
+        Form formA("Test", 42, 242);
         std::cout << formA << '\n';
 
         bureaucrat.signForm(formA);

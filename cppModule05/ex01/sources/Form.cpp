@@ -32,7 +32,7 @@ const char *Form::GradeTooHighException::what() const throw()
 
 const char *Form::GradeTooLowException::what() const throw()
 {
-    return "Grade is too low. Must be between 1 and 150.";
+    return "GradeTooLowException: Form grade is out of bounds [1-150] or bureaucrat's grade is not high enough.";
 }
 
 bool Form::getSignedStatus() const

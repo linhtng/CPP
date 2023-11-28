@@ -3,6 +3,7 @@
 #define ROBOTOMYREQUESTFORM_HPP
 
 #include "AForm.hpp"
+#include <cstdlib>
 
 class RobotomyRequestForm : public AForm
 {
@@ -16,23 +17,10 @@ public:
     // getters:
     std::string getTarget() const;
 
-    class GradeTooHighException : public std::exception
-    {
-    public:
-        const char *what() const throw();
-    };
-    class GradeTooLowException : public std::exception
-    {
-    public:
-        const char *what() const throw();
-    };
-
     void execute(const Bureaucrat &executor) const;
 
 private:
     std::string target;
 };
-
-std::ostream &operator<<(std::ostream &o, RobotomyRequestForm const &src);
 
 #endif

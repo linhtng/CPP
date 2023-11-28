@@ -27,12 +27,17 @@ AForm::~AForm() {}
 
 const char *AForm::GradeTooHighException::what() const throw()
 {
-    return "Grade is too high. Must be between 1 and 150.";
+    return "Form grade is too high.";
 }
 
 const char *AForm::GradeTooLowException::what() const throw()
 {
-    return "Grade is too low. Must be between 1 and 150.";
+    return "Form grade is too low.";
+}
+
+const char *AForm::UnsignedFormException::what() const throw()
+{
+    return YELLOW "Form is unsigned." RESET;
 }
 
 bool AForm::getSignedStatus() const
@@ -70,4 +75,12 @@ std::ostream &operator<<(std::ostream &outputStream, AForm const &src)
                  << ". Grade to sign: " << src.getGradeToSign()
                  << ". Grade to execute: " << src.getGradeToExecute() << "\n" RESET;
     return outputStream;
+}
+
+void AForm::execute(const Bureaucrat &executor) const
+{
+    if (!getSignedStatus())
+        throw AForm::UnsignedFormException();
+    if (executor.getGrade() > getGradeToExecute())
+        throw AForm::GradeTooLowException();
 }
