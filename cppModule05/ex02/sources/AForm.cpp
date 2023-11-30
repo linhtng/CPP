@@ -27,17 +27,22 @@ AForm::~AForm() {}
 
 const char *AForm::GradeTooHighException::what() const throw()
 {
-    return "Form grade is too high.";
+    return "Form rade is too high. Must be between 1 and 150.";
 }
 
 const char *AForm::GradeTooLowException::what() const throw()
 {
-    return "Form grade is too low.";
+    return "GradeTooLowException: Form grade is out of bounds [1-150] or their bureaucrat's grade is not high enough.";
 }
 
 const char *AForm::UnsignedFormException::what() const throw()
 {
     return YELLOW "Form is unsigned." RESET;
+}
+
+const char *AForm::ExecuteGradeTooLowException::what() const throw()
+{
+    return RED "their bureaucrat's grade is not high enough." RESET;
 }
 
 bool AForm::getSignedStatus() const
@@ -82,5 +87,5 @@ void AForm::execute(const Bureaucrat &executor) const
     if (!getSignedStatus())
         throw AForm::UnsignedFormException();
     if (executor.getGrade() > getGradeToExecute())
-        throw AForm::GradeTooLowException();
+        throw AForm::ExecuteGradeTooLowException();
 }

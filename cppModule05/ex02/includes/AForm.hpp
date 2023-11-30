@@ -52,6 +52,11 @@ public:
     public:
         const char *what() const throw();
     };
+    class ExecuteGradeTooLowException : public std::exception
+    {
+    public:
+        const char *what() const throw();
+    };
 
     // Pure virtual function to be overridden by concrete classes
     virtual void execute(const Bureaucrat &executor) const = 0;
