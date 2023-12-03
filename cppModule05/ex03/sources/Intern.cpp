@@ -30,7 +30,7 @@ AForm *Intern::makeForm(const std::string &formName, const std::string &target) 
         if (nameList[i] == formName)
             return createForm(target, formFunctions[i]);
     }
-    std::cout << "Error: Unknown form name '" << formName << "'" << std::endl;
+    std::cout << RED "Error: Unknown form name '" << formName << "'" RESET << std::endl;
     return NULL;
 }
 

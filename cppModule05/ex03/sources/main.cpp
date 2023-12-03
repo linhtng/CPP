@@ -10,9 +10,13 @@ void testShrubberyCreationForm()
     Intern intern;
 
     AForm *shrubberyForm = intern.makeForm("shrubbery creation", "home");
+    if (!shrubberyForm)
+    {
+        std::cerr << RED "Error: makeForm failed." RESET << std::endl;
+        return;
+    }
     std::cout << *shrubberyForm;
     Bureaucrat bureaucrat("John", 50);
-
     try
     {
         bureaucrat.signForm(*shrubberyForm);
@@ -30,6 +34,11 @@ void testRobotomyRequestForm()
     Intern intern;
 
     AForm *robotomyForm = intern.makeForm("robotomy request", "Bender");
+    if (!robotomyForm)
+    {
+        std::cerr << RED "Error: makeForm failed." RESET << std::endl;
+        return;
+    }
     std::cout << *robotomyForm;
     Bureaucrat bureaucrat("John", 40);
 
@@ -49,7 +58,12 @@ void testPresidentialPardonForm()
 {
     Intern intern;
 
-    AForm *pardonForm = intern.makeForm("presidential pardo", "Nobody");
+    AForm *pardonForm = intern.makeForm("presidential pardon", "Nobody");
+    if (!pardonForm)
+    {
+        std::cerr << RED "Error: makeForm failed." RESET << std::endl;
+        return;
+    }
     std::cout << *pardonForm;
     Bureaucrat bureaucrat("John", 145);
 
