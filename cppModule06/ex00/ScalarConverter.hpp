@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <exception>
-#include <limits>
+#include <sstream>
 #include <ctype.h>
 
 class ScalarConverter
@@ -21,23 +21,23 @@ private:
         INT,
         FLOAT,
         DOUBLE,
+        PSEUDO,
         UNKNOWN
     };
-
-    double doubleLiteral;
-    int intLiteral;
-
+    template <typename T>
+    static bool isConvertible(const std::string &literal);
     static int getLiteralType(const std::string &literal);
-    static void handleChar(const std::string &literal);
-    static void handleInt(const std::string &literal);
-    static void handleFloat(const std::string &literal);
-    static void handleDouble(const std::string &literal);
+    static void convertToChar(const std::string &literal, int type);
+    static void convertToInt(const std::string &literal, int type);
+    static void convertToFloat(const std::string &literal, int type);
+    static void convertToDouble(const std::string &literal, int type);
+
     static bool isFloatFormat(const std::string &literal);
     static bool endsWith(const std::string &literal, char c);
     static int countCharacter(const std::string &literal, char c);
 
 public:
-    static int convert(const std::string &literal);
+    static void convert(const std::string &literal);
 };
 
 #endif
