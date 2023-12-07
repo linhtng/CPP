@@ -39,8 +39,8 @@ bool ScalarConverter::endsWith(const std::string &literal, char c)
 bool ScalarConverter::isFloatFormat(const std::string &literal)
 {
     if (countCharacter(literal, '.') == 1 &&
-        (countCharacter(literal, 'f') == 1 || countCharacter(literal, 'F') == 1) &&
-        (endsWith(literal, 'f') || endsWith(literal, 'F')))
+        countCharacter(literal, 'f') == 1 &&
+        endsWith(literal, 'f'))
         return true;
     return false;
 }
@@ -53,7 +53,7 @@ int ScalarConverter::getLiteralType(const std::string &literal)
         return FLOAT;
     if (countCharacter(literal, '.') == 1)
         return DOUBLE;
-    else if (isdigit(literal[0]))
+    if (isdigit(literal[0]))
     {
         for (int i = 1; i < literal.length(); ++i)
         {

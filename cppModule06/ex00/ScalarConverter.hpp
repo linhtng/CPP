@@ -25,6 +25,7 @@ private:
     };
 
     double doubleLiteral;
+    int intLiteral;
 
     static int getLiteralType(const std::string &literal);
     static void handleChar(const std::string &literal);
