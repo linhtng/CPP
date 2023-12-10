@@ -6,6 +6,8 @@
 #include <exception>
 #include <sstream>
 #include <ctype.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 class ScalarConverter
 {
@@ -27,10 +29,14 @@ private:
     template <typename T>
     static bool isConvertible(const std::string &literal);
     static int getLiteralType(const std::string &literal);
-    static void convertToChar(const std::string &literal, int type);
-    static void convertToInt(const std::string &literal, int type);
-    static void convertToFloat(const std::string &literal, int type);
-    static void convertToDouble(const std::string &literal, int type);
+
+    static void convertToChar(const std::string &literal);
+    static void convertToInt(const std::string &literal);
+    static void convertToFloat(const std::string &literal);
+    static void convertToDouble(const std::string &literal);
+
+    static void printChar(const int num);
+    // static void printImpossible();
 
     static bool isFloatFormat(const std::string &literal);
     static bool endsWith(const std::string &literal, char c);

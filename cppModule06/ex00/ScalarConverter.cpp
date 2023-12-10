@@ -18,19 +18,26 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &src)
 void ScalarConverter::convert(const std::string &literal)
 {
     int type = getLiteralType(literal);
+    std::cout << "type: " << type << '\n';
     try
     {
-        std::cout << "char: ";
-        convertToChar(literal, type);
-
-        std::cout << "int: ";
-        convertToInt(literal, type);
-
-        std::cout << "float: ";
-        convertToFloat(literal, type);
-
-        std::cout << "double: ";
-        convertToDouble(literal, type);
+        switch (type)
+        {
+        case CHAR:
+            convertToChar(literal);
+            break;
+        case INT:
+            convertToInt(literal);
+            break;
+        case FLOAT:
+            convertToFloat(literal);
+            break;
+        case DOUBLE:
+            convertToDouble(literal);
+            break;
+        default:
+            std::cout << "Error: Unknown type of literal" << std::endl;
+        }
     }
     catch (const std::exception &e)
     {
@@ -66,11 +73,13 @@ bool ScalarConverter::isFloatFormat(const std::string &literal)
 
 int ScalarConverter::getLiteralType(const std::string &literal)
 {
+    std::string floatStr(literal.begin(), literal.end() - 1);
+
     if (literal.length() == 1 && isalpha(literal[0]))
         return CHAR;
-    if (isFloatFormat(literal) && isConvertible<float>(literal))
+    if (isFloatFormat(literal) && isConvertible<float>(floatStr))
         return FLOAT;
-    if (countCharacter(literal, '.') == 1 && isConvertible<double>(literal))
+    if (countCharacter(literal, '.') == 1 && isConvertible<double>(literal) && !endsWith(literal, '.'))
         return DOUBLE;
     if (isConvertible<int>(literal))
         return INT;
@@ -84,102 +93,81 @@ int ScalarConverter::getLiteralType(const std::string &literal)
     return UNKNOWN;
 }
 
-void ScalarConverter::convertToChar(const std::string &literal, int type)
+void ScalarConverter::convertToChar(const std::string &literal)
 {
-    if (literal == "42.0f")
-    {
-        std::cout << "'*'" << std::endl;
-        return;
-    }
-    switch (type)
-    {
-    case CHAR:
-        std::cout << literal[0] << std::endl;
-        break;
-    case INT:
-        if (literal.length() == 1 && static_cast<char>(literal[0]) != '0')
-            std::cout << static_cast<char>(literal[0]) << std::endl;
-        else
-            std::cout << "Non displayable" << std::endl;
-        break;
-    case PSEUDO:
-        std::cout << "impossible" << std::endl;
-        break;
-    default:
-        std::cout << "Non displayable" << std::endl;
-    }
-    // int intValue = static_cast<int>(value);
-    // float floatValue = static_cast<float>(value);
-    // double doubleValue = static_cast<double>(value);
+    printChar(static_cast<int>(literal[0]));
+    int intValue = static_cast<int>(literal[0]);
+    float floatValue = static_cast<float>(literal[0]);
+    double doubleValue = static_cast<double>(literal[0]);
 
-    // std::cout << "int: " << intValue << std::endl;
-    // std::cout << "float: " << floatValue << "f" << std::endl;
-    // std::cout << "double: " << doubleValue << std::endl;
+    std::cout << "int: " << intValue << std::endl;
+    std::cout << "float: " << floatValue << "f" << std::endl;
+    std::cout << "double: " << doubleValue << std::endl;
 }
 
-void ScalarConverter::convertToInt(const std::string &literal, int type)
+void ScalarConverter::convertToInt(const std::string &literal)
 {
     std::istringstream stream(literal);
-    if (type >= PSEUDO)
+    int value;
+    if (!(stream >> value) || value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
     {
+        // Overflow
         std::cout << "impossible" << std::endl;
         return;
     }
-    if (type == INT)
-    {
-        int value;
-        stream >> value;
-        if (value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
-        {
-            // Overflow
-            std::cout << "impossible due to overflow" << std::endl;
-            return;
-        }
-        std::cout << value << std::endl;
-        return;
-    }
-    else
-    {
-        float floatValue;
-        int value;
-        stream >> floatValue;
-        value = static_cast<int>(floatValue);
-        if (value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
-        {
-            // Overflow
-            std::cout << "impossible due to overflow" << std::endl;
-            return;
-        }
-        std::cout << value << std::endl;
-    }
+    printChar(value);
+    std::cout << "int: " << value << std::endl;
+    std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
+    std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
 }
 
-void ScalarConverter::convertToFloat(const std::string &literal, int type)
+void ScalarConverter::convertToFloat(const std::string &literal)
 {
-    std::istringstream stream(literal);
+    const std::string floatStr(literal.begin(), literal.end() - 1);
+    std::istringstream stream(floatStr);
     float value;
-    stream >> value;
-    if (type == FLOAT)
+    if (!(stream >> value) || value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
     {
-        if ((stream >> value))
-            std::cout << value << std::endl;
+        // Overflow
+        std::cout << "impossible" << std::endl;
+        return;
+    }
+    printChar(value);
+    std::cout << "int: " << static_cast<int>(value) << std::endl;
+    if (value == static_cast<int>(value))
+    {
+        std::cout << "float: " << value << ".0f" << std::endl;
+        std::cout << "double: " << static_cast<double>(value) << ".0" << std::endl;
     }
     else
-        std::cout << static_cast<float>(value) << std::endl;
+    {
+        std::cout << "float: " << value << "f" << std::endl;
+        std::cout << "double: " << static_cast<double>(value) << std::endl;
+    }
 }
 
-void ScalarConverter::convertToDouble(const std::string &literal, int type)
+void ScalarConverter::convertToDouble(const std::string &literal)
 {
     std::istringstream stream(literal);
     double value;
-    stream >> value;
-    if (type == DOUBLE)
+    if (!(stream >> value) || value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
     {
-        if ((stream >> value))
-            std::cout << value << std::endl;
+        // Overflow
+        std::cout << "impossible" << std::endl;
+        return;
+    }
+    printChar(value);
+    std::cout << "int: " << static_cast<int>(value) << std::endl;
+    if (value == static_cast<int>(value))
+    {
+        std::cout << "float: " << static_cast<float>(value) << ".0f" << std::endl;
+        std::cout << "double: " << value << ".0" << std::endl;
     }
     else
-        std::cout << static_cast<double>(value) << std::endl;
+    {
+        std::cout << "float: " << static_cast<float>(value) << "f" << std::endl;
+        std::cout << "double: " << value << std::endl;
+    }
 }
 
 template <typename T>
@@ -191,7 +179,6 @@ bool ScalarConverter::isConvertible(const std::string &literal)
     // Try to extract a value of type T from the stream
     if (!(stream >> value))
         return false; // Extraction failed, not convertible to type T
-
     // Check for trailing characters after the value
     char c;
     if (stream >> c)
@@ -199,3 +186,22 @@ bool ScalarConverter::isConvertible(const std::string &literal)
 
     return true; // The string is convertible to type T
 }
+
+void ScalarConverter::printChar(const int num)
+{
+    std::cout << "char: ";
+    if (num > 32 && num < CHAR_MAX)
+        std::cout << "'" << static_cast<char>(num) << "'" << std::endl;
+    else if (num <= 32 && num >= 0)
+        std::cout << "Non displayble" << std::endl;
+    else
+        std::cout << "impossible" << std::endl;
+}
+
+/* void ScalarConverter::printImpossible()
+{
+    std::cout << "char: impossible" << std::endl;
+    std::cout << "int: impossible" << std::endl;
+    std::cout << "float: impossible" << std::endl;
+    std::cout << "double: impossible" << std::endl;
+} */
