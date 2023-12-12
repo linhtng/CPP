@@ -1,4 +1,4 @@
-CFLAGS = c++ -Wall -Wextra -Werror -std=c++98 -Wno-unused -g3
+CFLAGS = c++ -Wall -Wextra -Werror -std=c++98
 
 NAME = ScalarConverter
 
