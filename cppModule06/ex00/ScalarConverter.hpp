@@ -5,9 +5,6 @@
 #include <string>
 #include <exception>
 #include <sstream>
-#include <ctype.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 class ScalarConverter
 {
@@ -23,7 +20,8 @@ private:
         INT,
         FLOAT,
         DOUBLE,
-        PSEUDO,
+        PSEUDOINF,
+        PSEUDONAN,
         UNKNOWN
     };
     template <typename T>
@@ -34,6 +32,8 @@ private:
     static void convertToInt(const std::string &literal);
     static void convertToFloat(const std::string &literal);
     static void convertToDouble(const std::string &literal);
+    static void convertToPseudoInf(const std::string &literal);
+    static void convertToPseudoNan();
 
     static void printChar(const int num);
     // static void printImpossible();

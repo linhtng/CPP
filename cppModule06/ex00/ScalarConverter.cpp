@@ -18,7 +18,7 @@ ScalarConverter &ScalarConverter::operator=(const ScalarConverter &src)
 void ScalarConverter::convert(const std::string &literal)
 {
     int type = getLiteralType(literal);
-    std::cout << "type: " << type << '\n';
+    // std::cout << "type: " << type << '\n';
     try
     {
         switch (type)
@@ -34,6 +34,12 @@ void ScalarConverter::convert(const std::string &literal)
             break;
         case DOUBLE:
             convertToDouble(literal);
+            break;
+        case PSEUDOINF:
+            convertToPseudoInf(literal);
+            break;
+        case PSEUDONAN:
+            convertToPseudoNan();
             break;
         default:
             std::cout << "Error: Unknown type of literal" << std::endl;
@@ -83,12 +89,17 @@ int ScalarConverter::getLiteralType(const std::string &literal)
         return DOUBLE;
     if (isConvertible<int>(literal))
         return INT;
-    const std::string pseudoList[6] = {"-inff", "+inff", "nanf",
-                                       "-inf", "+inf", "nan"};
+    const std::string pseudoList[6] = {"-inff", "+inff",
+                                       "-inf", "+inf", "nanf", "nan"};
     for (int i = 0; i < 6; ++i)
     {
         if (pseudoList[i] == literal)
-            return PSEUDO;
+        {
+            if (i <= 3)
+                return PSEUDOINF;
+            else
+                return PSEUDONAN;
+        }
     }
     return UNKNOWN;
 }
@@ -198,10 +209,18 @@ void ScalarConverter::printChar(const int num)
         std::cout << "impossible" << std::endl;
 }
 
-/* void ScalarConverter::printImpossible()
+void ScalarConverter::convertToPseudoInf(const std::string &literal)
 {
-    std::cout << "char: impossible" << std::endl;
+    printChar(-1);
     std::cout << "int: impossible" << std::endl;
-    std::cout << "float: impossible" << std::endl;
-    std::cout << "double: impossible" << std::endl;
-} */
+    std::cout << "float: " << literal[0] << "inff\n";
+    std::cout << "float: " << literal[0] << "inf\n";
+}
+
+void ScalarConverter::convertToPseudoNan()
+{
+    printChar(-1);
+    std::cout << "int: impossible" << std::endl;
+    std::cout << "float: nanf" << std::endl;
+    std::cout << "double: nan" << std::endl;
+}
