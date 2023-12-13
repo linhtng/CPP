@@ -187,15 +187,10 @@ bool ScalarConverter::isConvertible(const std::string &literal)
     std::istringstream stream(literal);
     T value;
 
-    // Try to extract a value of type T from the stream
-    if (!(stream >> value))
-        return false; // Extraction failed, not convertible to type T
-    // Check for trailing characters after the value
-    char c;
-    if (stream >> c)
-        return false; // Trailing characters found, not a valid value
+    stream >> value;
 
-    return true; // The string is convertible to type T
+    // Check if the entire string was consumed and the conversion was successful
+    return !stream.fail() && stream.eof();
 }
 
 void ScalarConverter::printChar(const int num)
