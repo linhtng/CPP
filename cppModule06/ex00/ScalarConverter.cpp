@@ -112,15 +112,15 @@ void ScalarConverter::convertToChar(const std::string &literal)
     double doubleValue = static_cast<double>(literal[0]);
 
     std::cout << "int: " << intValue << std::endl;
-    std::cout << "float: " << floatValue << "f" << std::endl;
-    std::cout << "double: " << doubleValue << std::endl;
+    std::cout << "float: " << floatValue << ".0f" << std::endl;
+    std::cout << "double: " << doubleValue << ".0" << std::endl;
 }
 
 void ScalarConverter::convertToInt(const std::string &literal)
 {
     std::istringstream stream(literal);
     int value;
-    if (!(stream >> value) || value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
+    if (!(stream >> value) || value < INT_MIN || value > INT_MAX)
     {
         // Overflow
         std::cout << "impossible" << std::endl;
@@ -137,7 +137,7 @@ void ScalarConverter::convertToFloat(const std::string &literal)
     const std::string floatStr(literal.begin(), literal.end() - 1);
     std::istringstream stream(floatStr);
     float value;
-    if (!(stream >> value) || value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
+    if (!(stream >> value) || value < INT_MIN || value > INT_MAX)
     {
         // Overflow
         std::cout << "impossible" << std::endl;
@@ -161,7 +161,7 @@ void ScalarConverter::convertToDouble(const std::string &literal)
 {
     std::istringstream stream(literal);
     double value;
-    if (!(stream >> value) || value < std::numeric_limits<int>::min() || value > std::numeric_limits<int>::max())
+    if (!(stream >> value) || value < INT_MIN || value > INT_MAX)
     {
         // Overflow
         std::cout << "impossible" << std::endl;
