@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ARRAY_HPP
+#define ARRAY_HPP
 #include <iostream>
 #include <exception>
 
@@ -18,6 +20,9 @@ public:
 
     unsigned int size() const;
     T &operator[](unsigned int index);
+    const T &operator[](unsigned int index) const;
 };
 
 #include "Array.tpp" // Include the implementation file
+
+#endif

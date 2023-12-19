@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ITER_HPP
+#define ITER_HPP
 #include <iostream>
 
 /* Function template iter that takes 3 parameters
@@ -11,3 +13,4 @@ void iter(T *array, size_t length, F function)
     for (size_t i = 0; i < length; ++i)
         function(array[i]);
 }
+#endif
