@@ -4,6 +4,9 @@
 #include <iostream>
 #include <exception>
 
+#define CYAN "\033[36m"
+#define RESET "\e[0m"
+
 template <typename T>
 class Array
 {

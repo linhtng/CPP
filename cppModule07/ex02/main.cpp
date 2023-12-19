@@ -5,7 +5,7 @@
 
 void subjectTest()
 {
-    std::cout << "Subject Test\n";
+    std::cout << CYAN "Subject Test\n" RESET;
     Array<int> numbers(MAX_VAL);
     int *mirror = new int[MAX_VAL];
     srand(time(NULL));
@@ -54,7 +54,7 @@ void subjectTest()
 
 void basicTest()
 {
-    std::cout << "\nBasic Test\n";
+    std::cout << CYAN "\nBasic Test\n" RESET;
 
     // Test construction with an unsigned int n as a parameter
     Array<int> arr1(5); // Create an array with 5 elements
@@ -100,7 +100,7 @@ void basicTest()
 
 void constInstanceTest()
 {
-    std::cout << "\nConst Instance Test\n";
+    std::cout << CYAN "\nConst Instance Test\n" RESET;
     const Array<int> const_numbers(1);
     std::cout << const_numbers[0] << std::endl;
 
@@ -117,7 +117,7 @@ void constInstanceTest()
 
 void strArrayTest()
 {
-    std::cout << "\nstrArrayTest\n";
+    std::cout << CYAN "\nstrArrayTest\n" RESET;
     Array<std::string> strArray(2);
     std::cout << strArray[0] << std::endl;
     std::cout << strArray[1] << std::endl;
@@ -144,7 +144,7 @@ private:
 
 void complexTypeTest()
 {
-    std::cout << "\nArray test with more complex type\n";
+    std::cout << CYAN "\nArray test with more complex type\n" RESET;
     // Create an array of ComplexNumber objects
     Array<ComplexNumber> complexArray(3);
     complexArray[0] = ComplexNumber(1.0, 2.0);
@@ -160,7 +160,7 @@ void complexTypeTest()
     std::cout << std::endl;
 }
 
-int main(int, char **)
+int main()
 {
     subjectTest();
 
