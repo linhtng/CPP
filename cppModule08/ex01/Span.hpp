@@ -19,6 +19,11 @@ public:
     Span(const Span &src);
     Span &operator=(const Span &src);
     ~Span();
+
+    unsigned int getMaxSize() const;
+    void addNumber(int num);
+    void addNumber(const std::vector<int> &numbers);
+    void showContains();
 };
 
 #endif
