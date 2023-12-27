@@ -6,6 +6,11 @@
 #include <exception>
 #include <vector>
 #include <algorithm>
+#include <iterator>
+
+#define RED "\e[91m"
+#define CYAN "\033[36m"
+#define RESET "\e[0m"
 
 class Span
 {
@@ -20,9 +25,10 @@ public:
     Span &operator=(const Span &src);
     ~Span();
 
-    unsigned int getMaxSize() const;
     void addNumber(int num);
-    void addNumber(const std::vector<int> &numbers);
+    void addNumbers(const std::vector<int> &numbers);
+    int longestSpan() const;
+    int shortestSpan() const;
     void showContains();
 };
 
