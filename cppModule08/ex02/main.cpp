@@ -7,9 +7,9 @@ void subjectTest()
     MutantStack<int> mstack;
     mstack.push(5);
     mstack.push(17);
-    std::cout << "Top elem: " << mstack.top() << std::endl;
+    std::cout << "Top elem: " << mstack.top() << std::endl; // 17
     mstack.pop();
-    std::cout << "Stack size: " << mstack.size() << std::endl;
+    std::cout << "Stack size: " << mstack.size() << std::endl; // 1
     mstack.push(3);
     mstack.push(5);
     mstack.push(737);
@@ -62,7 +62,7 @@ void subjectTestReverseIte()
         ++it;
     }
     MutantStack<int> mstack2(mstack); //test copy constructor
-    std::cout << "Is new stack empty? " << (mstack2.empty() ? "Yes" : "No") << std::endl;
+    std::cout << "Is new stack empty? " << (mstack2.empty() ? "Yes" : "No") << std::endl; //test empty: should be no
     MutantStack<int>::iterator it2 = mstack2.begin();
     MutantStack<int>::iterator ite2 = mstack2.end();
     std::cout << "Iterate through the stack 2 and print out its content: " << std::endl;
@@ -72,14 +72,14 @@ void subjectTestReverseIte()
         ++it2;
     }
     MutantStack<int> mstack3;
-    std::cout << "Is new stack empty before assignment operator called? " << (mstack3.empty() ? "Yes" : "No") << std::endl;
+    std::cout << "Is new stack empty before assignment operator called? " << (mstack3.empty() ? "Yes" : "No") << std::endl; //test empty: should be yes
     mstack3 = mstack;
-    std::cout << "Is new stack empty after assignment operator called? " << (mstack2.empty() ? "Yes" : "No") << std::endl;
+    std::cout << "Is new stack empty after assignment operator called? " << (mstack2.empty() ? "Yes" : "No") << std::endl; //test empty: should be no
 }
 
 int main()
 {
-    // subjectTest();
+    subjectTest();
     subjectTestReverseIte();
 
     return 0;
