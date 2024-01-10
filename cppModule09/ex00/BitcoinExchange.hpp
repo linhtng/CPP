@@ -25,12 +25,12 @@ public:
     BitcoinExchange &operator=(const BitcoinExchange &src);
     ~BitcoinExchange();
 
-    void readBitcoinPrices(const std::string &database);
-    void calculateExchangeRate(const std::string &inputFile);
+    void displayBitcoinValue(const std::string &inputFile);
 
 private:
     std::map<std::string, double> prices;
 
+    void readBitcoinPrices(const std::string &database);
     bool isValidDate(const std::string &date);
     bool isValidValue(double value);
     double findClosestPrice(const std::string &date);

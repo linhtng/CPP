@@ -5,12 +5,6 @@ BitcoinExchange::BitcoinExchange() {}
 BitcoinExchange::BitcoinExchange(const std::string &database)
 {
     this->readBitcoinPrices(database);
-    /* if (prices.empty()) {
-        std::cout << "The prices map is empty." << std::endl;
-    } else {
-        for(std::map<std::string, double>::const_iterator it = prices.begin(); it != prices.end(); ++it)
-            std::cout << it->first << ", " << std::setprecision(10) << it->second << "\n";
-    } */
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &src) : prices(src.prices) {}
@@ -61,7 +55,7 @@ bool BitcoinExchange::isValidDate(const std::string &date)
                                        tm.tm_mday == tm_copy.tm_mday))
             return true;
     }
-    std::cout << RED "Error: invalid date.\n" RESET;
+    std::cout << RED "Error: invalid date => " << date << "\n" RESET;
     return false;
 }
 
@@ -78,28 +72,12 @@ double BitcoinExchange::findClosestPrice(const std::string &date)
 {
     std::map<std::string, double>::iterator lower = prices.lower_bound(date);
     if (lower == prices.begin())
-    {
-        return lower->second;
-    }
-    else if (lower == prices.end())
-    {
-        return std::prev(lower)->second;
-    }
+        return 0;
     else
-    {
-        std::map<std::string, double>::iterator prev = std::prev(lower);
-        if (lower->first.compare(date) < date.compare(prev->first))
-        {
-            return lower->second;
-        }
-        else
-        {
-            return prev->second;
-        }
-    }
+        return std::prev(lower)->second;
 }
 
-void BitcoinExchange::calculateExchangeRate(const std::string &inputFile)
+void BitcoinExchange::displayBitcoinValue(const std::string &inputFile)
 {
     std::ifstream file(inputFile);
     std::string line;
@@ -111,13 +89,19 @@ void BitcoinExchange::calculateExchangeRate(const std::string &inputFile)
         {
             std::string date = match[1];
             double value = std::stod(match[2]);
-
             if (isValidDate(date) && isValidValue(value))
-                std::cout << "Valid line: " << line << std::endl;
+            {
+                double exchangeRate;
+                std::map<std::string, double>::iterator it = prices.find(date);
+                if (it != prices.end())
+                    exchangeRate = it->second;
+                else
+                    exchangeRate = findClosestPrice(date);
+                double result = value * exchangeRate;
+                std::cout << date << " => " << std::setprecision(10) << value << " = " << result << std::endl;
+            }
         }
         else if (line != "date | value")
-        {
             std::cout << RED "Error: bad input => " << line << RESET << std::endl;
-        }
     }
 }
