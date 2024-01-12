@@ -1,0 +1,7 @@
+Here is the pseudocode:
+
+Define the PmergeMe class in a header file (PmergeMe.hpp)
+Implement the PmergeMe class in a separate cpp file (PmergeMe.cpp)
+In the main function (main.cpp), parse the command line arguments into a std::vector and a std::list
+Create an instance of PmergeMe and call the sort and timing methods
+Display the results
