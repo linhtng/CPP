@@ -44,34 +44,34 @@ std::list<int> PmergeMe::generatePowerSequenceList(int length)
     return sequence;
 }
 
+std::vector<std::pair<int, int>> PmergeMe::makePairs(const std::vector<int> &vec)
+{
+    std::vector<std::pair<int, int>> pairs;
+    for (size_t i = 0; i < vec.size() - 1; i += 2)
+    {
+        pairs.emplace_back(vec[i], vec[i + 1]);
+    }
+    std::cout << "after pair grouping vector size: " << pairs.size() << "\n";
+    for (const auto &pair : pairs)
+    {
+        std::cout << pair.first << ", " << pair.second << "\n";
+    }
+    std::cout << "\n";
+    return pairs;
+}
+
 std::vector<int> PmergeMe::MergeInsertionSort(const std::vector<int> &arr)
 {
     // Base case: If the input array has only one element, return it
-    if (arr.size() <= 1) {
+    if (arr.size() <= 1)
+    {
         return arr;
     }
     // Step 1: Group the elements into pairs
-    std::vector<std::pair<int, int>> pairs;
-    for (size_t i = 0; i < arr.size(); i += 2)
-    {
-        if (i + 1 < arr.size())
-        {
-            pairs.emplace_back(arr[i], arr[i + 1]);
-        }
-        else
-        {
-            pairs.emplace_back(arr[i], arr[i]);
-        }
-    }
-    // std::cout << "after pair grouping vector size: " << pairs.size() << "\n";
-    // for (const auto &pair : pairs)
-    // {
-    //     std::cout << pair.first << ", " << pair.second << "\n";
-    // }
-    // std::cout << "\n";
+    std::vector<std::pair<int, int>> paired = makePairs(arr);
     // Step 2: Perform comparisons to determine the larger element in each pair
     std::vector<int> larger_elements;
-    for (const auto &pair : pairs)
+    for (const auto &pair : paired)
     {
         larger_elements.push_back(std::max(pair.first, pair.second));
     }
@@ -110,7 +110,8 @@ std::vector<int> PmergeMe::MergeInsertionSort(const std::vector<int> &arr)
 std::list<int> PmergeMe::MergeInsertionSort(const std::list<int> &arr)
 {
     // Base case: If the input array has only one element, return it
-    if (arr.size() <= 1) {
+    if (arr.size() <= 1)
+    {
         return arr;
     }
     // Step 1: Group the elements into pairs

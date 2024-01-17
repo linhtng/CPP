@@ -22,4 +22,5 @@ private:
     std::list<int> MergeInsertionSort(const std::list<int> &arr);
     std::vector<int> generatePowerSequence(int length);
     std::list<int> generatePowerSequenceList(int length);
+    std::vector<std::pair<int, int>> makePairs(const std::vector<int> &vec);
 };

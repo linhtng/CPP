@@ -2,7 +2,8 @@ CFLAGS = c++ -Wall -Wextra -Werror -g3 -std=c++11
 
 NAME = PmergeMe
 
-SRC = main.cpp \
+SRC = sortPair.cpp 
+#main.cpp \
 	PmergeMe.cpp
 
 OBJ_PATH = ./objects/
