@@ -46,12 +46,10 @@ std::list<int> PmergeMe::generatePowerSequenceList(int length)
 
 std::vector<int> PmergeMe::MergeInsertionSort(const std::vector<int> &arr)
 {
-    // Base case: if the array has only one element, it is already sorted
-    if (arr.size() <= 1)
-    {
+    // Base case: If the input array has only one element, return it
+    if (arr.size() <= 1) {
         return arr;
     }
-
     // Step 1: Group the elements into pairs
     std::vector<std::pair<int, int>> pairs;
     for (size_t i = 0; i < arr.size(); i += 2)
@@ -65,14 +63,23 @@ std::vector<int> PmergeMe::MergeInsertionSort(const std::vector<int> &arr)
             pairs.emplace_back(arr[i], arr[i]);
         }
     }
-
+    // std::cout << "after pair grouping vector size: " << pairs.size() << "\n";
+    // for (const auto &pair : pairs)
+    // {
+    //     std::cout << pair.first << ", " << pair.second << "\n";
+    // }
+    // std::cout << "\n";
     // Step 2: Perform comparisons to determine the larger element in each pair
     std::vector<int> larger_elements;
     for (const auto &pair : pairs)
     {
         larger_elements.push_back(std::max(pair.first, pair.second));
     }
-
+    for (const auto &element : larger_elements)
+    {
+        std::cout << element << " ";
+    }
+    std::cout << "\n";
     // Step 3: Recursively sort the larger elements
     std::vector<int> sorted_elements = MergeInsertionSort(larger_elements);
 
@@ -102,12 +109,10 @@ std::vector<int> PmergeMe::MergeInsertionSort(const std::vector<int> &arr)
 
 std::list<int> PmergeMe::MergeInsertionSort(const std::list<int> &arr)
 {
-    // Base case: if the container has only one element, it is already sorted
-    if (arr.size() <= 1)
-    {
+    // Base case: If the input array has only one element, return it
+    if (arr.size() <= 1) {
         return arr;
     }
-
     // Step 1: Group the elements into pairs
     std::list<std::pair<int, int>> pairs;
     auto it = arr.begin();
@@ -165,12 +170,13 @@ std::chrono::duration<double> PmergeMe::timeSortVector(std::vector<int> &vec)
     auto start = std::chrono::high_resolution_clock::now();
     std::vector<int> sorted = MergeInsertionSort(vec);
     auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "After sort for vector: ";
-    for (const auto &element : sorted)
-    {
-        std::cout << element << " ";
-    }
-    std::cout << "\n";
+    // std::cout << "sorted size: " << sorted.size() << "\n";
+    // std::cout << "After sort for vector: ";
+    // for (const auto &element : sorted)
+    // {
+    //     std::cout << element << " ";
+    // }
+    // std::cout << "\n";
     return end - start;
 }
 

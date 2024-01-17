@@ -30,7 +30,7 @@ int RPN::evaluate(const std::string &expression)
     while (iss >> token)
     {
         tokenCount++;
-        if (isdigit(token[0]))
+        if (isdigit(token[0]) && token.size() == 1)
         {
             stack.push(std::stoi(token));
         }
