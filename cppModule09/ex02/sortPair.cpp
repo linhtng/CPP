@@ -10,7 +10,10 @@ std::vector<std::pair<int, int>> makePairs(const std::vector<int> &vec)
     }
     for (size_t i = 0; i < vec.size() - 1; i += 2)
     {
-        pairs.emplace_back(vec[i], vec[i + 1]);
+        if (vec[i] > vec[i + 1])
+            pairs.emplace_back(vec[i], vec[i + 1]);
+        else
+            pairs.emplace_back(vec[i + 1], vec[i]);
     }
     return pairs;
 }
@@ -32,6 +35,13 @@ int main()
     std::vector<std::pair<int, int>> paired = makePairs(input);
 
     std::cout << "Pairs:" << std::endl;
+    for (const auto &pair : paired)
+    {
+        std::cout << pair.first << " " << pair.second << std::endl;
+    }
+
+    std::sort(paired.begin(), paired.end());
+    std::cout << "Pairs after sorted:" << std::endl;
     for (const auto &pair : paired)
     {
         std::cout << pair.first << " " << pair.second << std::endl;

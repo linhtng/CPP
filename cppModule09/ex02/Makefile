@@ -2,9 +2,9 @@ CFLAGS = c++ -Wall -Wextra -Werror -g3 -std=c++11
 
 NAME = PmergeMe
 
-SRC = sortPair.cpp 
-#main.cpp \
-	PmergeMe.cpp
+SRC = main.cpp \
+	PmergeMe.cpp \
+	#sortPair.cpp
 
 OBJ_PATH = ./objects/
 OBJ		= $(SRC:.cpp=.o)

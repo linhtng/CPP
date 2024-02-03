@@ -24,3 +24,4 @@ Partition the uninserted elements y_i into groups with contiguous indexes. There
 Order the uninserted elements by their groups (smaller indexes to larger indexes), but within each group order them from larger indexes to smaller indexes. Thus, the ordering becomes y_4, y_3, y_6, y_5, y_12, y_11, y_10, y_9, y_8, y_7, y_22, y_21...
 Use this ordering to insert the elements y_i into S. For each element y_i, use a binary search from the start of S up to but not including x_i to determine where to insert y_i.
 
+std::vector<std::vector<int>> nums = {{43, 15}, {56, 54}, {63, 29, 38, 7}, {9, 10, 6, 59, 52, 62}};

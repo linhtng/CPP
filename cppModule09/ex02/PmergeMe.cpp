@@ -1,6 +1,6 @@
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe() {}
+PmergeMe::PmergeMe() : oddSize(false) {}
 
 PmergeMe::PmergeMe(const PmergeMe &other)
 {
@@ -9,7 +9,7 @@ PmergeMe::PmergeMe(const PmergeMe &other)
 
 PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 {
-    (void)other;
+    oddSize = other.oddSize;
     return *this;
 }
 
@@ -18,12 +18,15 @@ PmergeMe::~PmergeMe() {}
 std::vector<int> PmergeMe::generatePowerSequence(int length)
 {
     std::vector<int> sequence;
-    sequence.reserve(length);
 
     int power = 2;
+    int sum = 0;
     for (int i = 2; i < length; i++)
     {
         sequence.push_back(power);
+        sum += power;
+        if (sum > length)
+            break;
         power = std::pow(2, i) - power;
     }
 
@@ -47,64 +50,109 @@ std::list<int> PmergeMe::generatePowerSequenceList(int length)
 std::vector<std::pair<int, int>> PmergeMe::makePairs(const std::vector<int> &vec)
 {
     std::vector<std::pair<int, int>> pairs;
-    for (size_t i = 0; i < vec.size() - 1; i += 2)
+    std::vector<int> temp(vec);
+    if (oddSize)
+        temp.pop_back();
+    for (size_t i = 0; i < temp.size() - 1; i += 2)
     {
-        pairs.emplace_back(vec[i], vec[i + 1]);
+        if (temp[i] > temp[i + 1])
+            pairs.emplace_back(temp[i], temp[i + 1]);
+        else
+            pairs.emplace_back(temp[i + 1], temp[i]);
     }
-    std::cout << "after pair grouping vector size: " << pairs.size() << "\n";
-    for (const auto &pair : pairs)
-    {
-        std::cout << pair.first << ", " << pair.second << "\n";
-    }
-    std::cout << "\n";
     return pairs;
 }
 
-std::vector<int> PmergeMe::MergeInsertionSort(const std::vector<int> &arr)
+void PmergeMe::partition(std::vector<int> &nums, std::vector<int> &groupSizes)
 {
-    // Base case: If the input array has only one element, return it
-    if (arr.size() <= 1)
+    std::vector<std::vector<int>> partitions;
+    int start = 0;
+    for (int size : groupSizes)
     {
-        return arr;
+        int end = start + size;
+        if (end > static_cast<int>(nums.size()))
+            end = nums.size();
+        std::vector<int> partition(nums.begin() + start, nums.begin() + end);
+        partitions.push_back(partition);
+        start += size;
     }
-    // Step 1: Group the elements into pairs
-    std::vector<std::pair<int, int>> paired = makePairs(arr);
-    // Step 2: Perform comparisons to determine the larger element in each pair
-    std::vector<int> larger_elements;
+    for (const auto &sub_vector : partitions)
+    {
+        for (const auto &element : sub_vector)
+        {
+            std::cout << element << ' ';
+        }
+        std::cout << '\n';
+    }
+}
+
+void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
+{
+    // Step 1: Group the elements into pairs and perform comparisons to determine the larger element in each pair
+    if (vec.size() % 2 != 0)
+        oddSize = true;
+    std::vector<std::pair<int, int>> paired = makePairs(vec);
+
+    // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
+    std::sort(paired.begin(), paired.end());
     for (const auto &pair : paired)
     {
-        larger_elements.push_back(std::max(pair.first, pair.second));
+        sorted.push_back(pair.first);
+        unsorted.push_back(pair.second);
     }
-    for (const auto &element : larger_elements)
+    if (oddSize)
+        unsorted.push_back(vec.back());
+    for (const auto &element : sorted)
     {
         std::cout << element << " ";
     }
     std::cout << "\n";
-    // Step 3: Recursively sort the larger elements
-    std::vector<int> sorted_elements = MergeInsertionSort(larger_elements);
-
+    for (const auto &element : unsorted)
+    {
+        std::cout << element << " ";
+    }
+    std::cout << "\n";
     // Step 4: Insert the element paired with the smallest element at the start of the sorted sequence
-    int smallest_element = *std::min_element(arr.begin(), arr.end());
-    sorted_elements.insert(sorted_elements.begin(), smallest_element);
-
-    // Step 5: Determine the insertion ordering for the remaining elements
-    std::vector<int> uninserted_elements;
-    for (const auto &element : arr)
+    sorted.insert(sorted.begin(), unsorted.front());
+    unsorted.erase(unsorted.begin());
+    for (const auto &element : sorted)
     {
-        if (std::find(sorted_elements.begin(), sorted_elements.end(), element) == sorted_elements.end())
-        {
-            uninserted_elements.push_back(element);
-        }
+        std::cout << element << " ";
     }
-    // Step 6: Insert the remaining elements into the sorted sequence using binary search
-    std::vector<int> insertion_order = generatePowerSequence(uninserted_elements.size());
-    for (const auto &element : insertion_order)
+    std::cout << "\n";
+    for (const auto &element : unsorted)
     {
-        auto it = std::lower_bound(sorted_elements.begin(), sorted_elements.end(), element);
-        sorted_elements.insert(it, element);
+        std::cout << element << " ";
     }
+    std::cout << "\n";
+    /*
+    Step 5 : Partition the unsorted elems into groups with contiguous indexes.
+    The sums of sizes of every two adjacent groups form a sequence of powers of two
+    */
+    std::vector<int> groupSizes = generatePowerSequence(unsorted.size());
+    for (const auto &element : groupSizes)
+    {
+        std::cout << element << " ";
+    }
+    std::cout << "\n";
+    partition(unsorted, groupSizes);
+    // std::vector<int> uninserted_elements;
+    // for (const auto &element : arr)
+    // {
+    //     if (std::find(sorted_elements.begin(), sorted_elements.end(), element) == sorted_elements.end())
+    //     {
+    //         uninserted_elements.push_back(element);
+    //     }
+    // }
+    // // Step 6: Insert the remaining elements into the sorted sequence using binary search
+    // std::vector<int> insertion_order = generatePowerSequence(uninserted_elements.size());
+    // for (const auto &element : insertion_order)
+    // {
+    //     auto it = std::lower_bound(sorted_elements.begin(), sorted_elements.end(), element);
+    //     sorted_elements.insert(it, element);
+    // }
 
-    return sorted_elements;
+    // return sorted_elements;
 }
 
 std::list<int> PmergeMe::MergeInsertionSort(const std::list<int> &arr)
@@ -169,7 +217,7 @@ std::list<int> PmergeMe::MergeInsertionSort(const std::list<int> &arr)
 std::chrono::duration<double> PmergeMe::timeSortVector(std::vector<int> &vec)
 {
     auto start = std::chrono::high_resolution_clock::now();
-    std::vector<int> sorted = MergeInsertionSort(vec);
+    MergeInsertionSort(vec);
     auto end = std::chrono::high_resolution_clock::now();
     // std::cout << "sorted size: " << sorted.size() << "\n";
     // std::cout << "After sort for vector: ";
