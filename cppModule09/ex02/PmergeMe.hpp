@@ -16,6 +16,7 @@ public:
 
     std::chrono::duration<double> timeSortVector(std::vector<int> &vec);
     std::chrono::duration<double> timeSortList(std::list<int> &lst);
+    void printVector(const std::vector<int> &vec);
 
 private:
     // std::vector<int> MergeInsertionSort(const std::vector<int> &arr);
@@ -24,7 +25,11 @@ private:
     std::vector<int> generatePowerSequence(int length);
     std::list<int> generatePowerSequenceList(int length);
     std::vector<std::pair<int, int>> makePairs(const std::vector<int> &vec);
-    void partition(std::vector<int> &nums, std::vector<int> &groupSizes);
+    std::vector<std::vector<int>> partition(std::vector<int> &nums, std::vector<int> &groupSizes);
+    std::vector<int> binarySearchLength(const std::vector<int> &vec);
+    void binaryInsertionSort(std::vector<int> &subsequence, int elemToInsert);
+    int binarySearch(std::vector<int> &subsequence, int left, int right, int elemToInsert);
+    std::vector<int> findSubsequence(const std::vector<int> &newSequence, int rightmostValue);
 
     std::vector<int> sorted;
     std::vector<int> unsorted;

@@ -25,3 +25,5 @@ Order the uninserted elements by their groups (smaller indexes to larger indexes
 Use this ordering to insert the elements y_i into S. For each element y_i, use a binary search from the start of S up to but not including x_i to determine where to insert y_i.
 
 std::vector<std::vector<int>> nums = {{43, 15}, {56, 54}, {63, 29, 38, 7}, {9, 10, 6, 59, 52, 62}};
+
+I have this sorted sequence, contains for example {24 78 89 95 109 121 128 134 160 169 190 192 199}, and this unsorted sequence U { 4 20 64 48 144 125 51 126 70 35 30 47}. I want to insert one number from U to S at a time, looking for the location where to insert by using binary search. However, I don't want to perform binary search on the whole sorted sequence. I want to only check a subsequence of the sorted array. How do 
