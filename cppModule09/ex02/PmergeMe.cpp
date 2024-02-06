@@ -90,11 +90,12 @@ std::vector<std::vector<int>> PmergeMe::partition(std::vector<int> &nums, std::v
         partitions.push_back(partition);
         start += size;
     }
-    for (const auto &sub_vector : partitions)
-    {
-        printVector(sub_vector);
-        std::cout << "Partition done" << '\n';
-    }
+    // std::cout << "Partition start: " << '\n';
+    // for (const auto &sub_vector : partitions)
+    // {
+    //     printVector(sub_vector);
+    //     std::cout << "Partition done" << '\n';
+    // }
     return partitions;
 }
 
@@ -125,15 +126,13 @@ int PmergeMe::binarySearch(std::vector<int> &subsequence, int left, int right, i
 
 void PmergeMe::binaryInsertionSort(std::vector<int> &subsequenceToInsert, int elemToInsert)
 {
-    // std::vector<int> subsequenceToInsert(sorted.begin(), sorted.begin() + searchLength);
-    // std::vector<int> subsequenceToInsert = findSubsequence(sorted, sorted[searchLength - 1]);
-    std::cout << "Subsequence to insert: \n";
-    printVector(subsequenceToInsert);
+    // std::cout << "Subsequence to insert: \n";
+    // printVector(subsequenceToInsert);
     int location = binarySearch(subsequenceToInsert, 0, subsequenceToInsert.size() - 1, elemToInsert);
-    std::cout << "Location: " << location << "\n";
+    // std::cout << "Location: " << location << "\n";
     sorted.insert(sorted.begin() + location, elemToInsert);
-    std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
-    printVector(sorted);
+    // std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
+    // printVector(sorted);
     // sorted.insert(sorted.begin() + lowerBound, elemToInsert);
 }
 
@@ -144,7 +143,8 @@ std::vector<int> PmergeMe::findSubsequence(const std::vector<int> &newSequence, 
 
     // Create a subsequence from the beginning of the new sequence to the location of the upperBound value
     std::vector<int> subsequence(newSequence.begin(), it + 1);
-    std::cout << "Subsequence with upperBound " << upperBound << ": \n";
+    std::cout << "Vector: Subsequence with upperBound " << upperBound << ": \n";
+    printVector(subsequence);
     return subsequence;
 }
 
@@ -164,15 +164,15 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     }
     if (oddSize)
         unsorted.push_back(vec.back());
-    std::cout << "Sorted: \n";
-    printVector(sorted);
-    std::cout << "Unsorted: \n";
-    printVector(unsorted);
+    // std::cout << "Sorted atfer step 1 - 3: \n";
+    // printVector(sorted);
+    // std::cout << "Unsorted: \n";
+    // printVector(unsorted);
 
     // Step 4: Insert the element paired with the smallest element at the start of the sorted sequence
     sorted.insert(sorted.begin(), unsorted.front());
     unsorted.erase(unsorted.begin());
-    std::cout << "Sorted: \n";
+    std::cout << "[Vector] Sorted after step 4: \n";
     printVector(sorted);
     std::cout << "Unsorted: \n";
     printVector(unsorted);
@@ -182,8 +182,9 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     The sums of sizes of every two adjacent groups form a sequence of powers of two
     */
     std::vector<int> groupSizes = generatePowerSequence(unsorted.size());
-    printVector(groupSizes);
-    std::cout << "Unsorted in groups: \n";
+    // std::cout << "Groups'sized generated so as the sums of sizes of every two adjacent groups form a sequence of powers of two: \n";
+    // printVector(groupSizes);
+    // std::cout << "Unsorted in groups: \n";
     std::vector<std::vector<int>> orderToInsert = partition(unsorted, groupSizes);
     // Step 6: Insert the remaining elements into the sorted sequence using binary search
     std::vector<int> subsequenceLength = binarySearchLength(groupSizes);
@@ -194,16 +195,24 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     {
         for (const auto &element : uninsertedGroup)
         {
-            std::vector<int> subsequence = findSubsequence(sorted, originalSorted[subsequenceLength[0]]);
-            binaryInsertionSort(subsequence, element);
-            subsequenceLength.erase(subsequenceLength.begin());
+            if (subsequenceLength.empty() == false)
+            {
+                std::vector<int> subsequence = findSubsequence(sorted, originalSorted[subsequenceLength[0]]);
+                binaryInsertionSort(subsequence, element);
+                subsequenceLength.erase(subsequenceLength.begin());
+                std::cout << "Subsequence length: \n";
+                printVector(subsequenceLength);
+            }
+            else
+            {
+                binaryInsertionSort(sorted, element);
+            }
         }
-        std::cout << '\n';
     }
-    if (std::is_sorted(sorted.begin(), sorted.end()))
-        std::cout << "Sorted\n";
-    else
-        std::cout << "Not sorted\n";
+    // if (std::is_sorted(sorted.begin(), sorted.end()))
+    //     std::cout << "Sorted\n";
+    // else
+    //     std::cout << "Not sorted\n";
     // for (const auto &element : insertion_order)
     // {
     //     auto it = std::lower_bound(sorted_elements.begin(), sorted_elements.end(), element);
@@ -239,14 +248,15 @@ void PmergeMe::timeSortVector(int argc, char *argv[])
         }
         vec.push_back(num);
     }
-    if (hasDuplicates(vec))
-    {
-        throw std::invalid_argument("Error");
-    }
+    // if (hasDuplicates(vec))
+    // {
+    //     std::cout << "Duplicates found.\n";
+    //     throw std::invalid_argument("Error");
+    // }
     MergeInsertionSort(vec);
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "After: ";
-    printVector(vec);
+    printVector(sorted);
     printTime(end - start, argc - 1, "std::vector");
 }
 
@@ -288,11 +298,12 @@ std::list<std::list<int>> PmergeMe::partition(std::list<int> &nums, std::list<in
         partitions.push_back(partition);
         std::advance(start, size);
     }
-    for (const auto &sub_list : partitions)
-    {
-        printList(sub_list);
-        std::cout << "Partition done" << '\n';
-    }
+    // std::cout << "Partition start" << '\n';
+    // for (const auto &sub_list : partitions)
+    // {
+    //     printList(sub_list);
+    //     std::cout << "Partition done" << '\n';
+    // }
     return partitions;
 }
 
@@ -321,7 +332,8 @@ std::list<int> PmergeMe::findSubsequence(const std::list<int> &newSequence, cons
     int upperBound = *std::next(oldSequence.begin(), upperBoundIndex);
     auto it = std::find(newSequence.begin(), newSequence.end(), upperBound);
     std::list<int> subsequence(newSequence.begin(), std::next(it, 1));
-    // std::cout << "Subsequence with upperBound " << upperBound << ": \n";
+    std::cout << "List: Subsequence with upperBound " << upperBound << ": \n";
+    printList(subsequence);
     return subsequence;
 }
 
@@ -337,13 +349,13 @@ int PmergeMe::binarySearchList(std::list<int> &subsequence, int left, int right,
 
 void PmergeMe::binaryInsertionSortList(std::list<int> &subsequenceToInsert, int elemToInsert)
 {
-    std::cout << "Subsequence to insert: \n";
-    printList(subsequenceToInsert);
+    // std::cout << "Subsequence to insert: \n";
+    // printList(subsequenceToInsert);
     int location = binarySearchList(subsequenceToInsert, 0, subsequenceToInsert.size() - 1, elemToInsert);
-    std::cout << "Location: " << location << "\n";
+    // std::cout << "Location: " << location << "\n";
     sortedList.insert(std::next(sortedList.begin(), location), elemToInsert);
-    std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
-    printList(sortedList);
+    // std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
+    // printList(sortedList);
 }
 
 void PmergeMe::MergeInsertionSort(std::list<int> &lst)
@@ -361,15 +373,15 @@ void PmergeMe::MergeInsertionSort(std::list<int> &lst)
     }
     if (oddSize)
         unsortedList.push_back(lst.back());
-    std::cout << "Sorted after step 1 - 3: \n";
-    printList(sortedList);
-    std::cout << "Unsorted: \n";
-    printList(unsortedList);
+    // std::cout << "Sorted after step 1 - 3: \n";
+    // printList(sortedList);
+    // std::cout << "Unsorted: \n";
+    // printList(unsortedList);
 
     // Step 4: Insert the element paired with the smallest element at the start of the sorted sequence
     sortedList.insert(sortedList.begin(), unsortedList.front());
     unsortedList.erase(unsortedList.begin());
-    std::cout << "Sorted after step 4: \n";
+    std::cout << "[List] Sorted after step 4: \n";
     printList(sortedList);
     std::cout << "Unsorted: \n";
     printList(unsortedList);
@@ -379,8 +391,8 @@ void PmergeMe::MergeInsertionSort(std::list<int> &lst)
     The sums of sizes of every two adjacent groups form a sequence of powers of two
     */
     std::list<int> groupSizes = generatePowerSequenceList(unsortedList.size());
-    printList(groupSizes);
-    std::cout << "Unsorted in partitioned groups: \n";
+    // printList(groupSizes);
+    // std::cout << "Unsorted in partitioned groups: \n";
     std::list<std::list<int>> orderToInsert = partition(unsortedList, groupSizes);
 
     /*
@@ -391,8 +403,8 @@ void PmergeMe::MergeInsertionSort(std::list<int> &lst)
     We then perform a binary search on that subsequence to find the location to insert the element.
     */
     std::list<int> subsequenceLength = binarySearchLength(groupSizes);
-    std::cout << "Subsequence length: \n";
-    printList(subsequenceLength);
+    // std::cout << "Subsequence length: \n";
+    // printList(subsequenceLength);
     std::list<int> originalSorted = sortedList;
     for (const auto &uninsertedGroup : orderToInsert)
     {
@@ -402,13 +414,8 @@ void PmergeMe::MergeInsertionSort(std::list<int> &lst)
             binaryInsertionSortList(subsequence, element);
             subsequenceLength.pop_front();
         }
-        std::cout << '\n';
     }
-    if (std::is_sorted(sortedList.begin(), sortedList.end()))
-        std::cout << "Sorted\n";
-    else
-        std::cout << "Not sorted\n";
-    // if (std::is_sorted(sorted.begin(), sorted.end()))
+    // if (std::is_sorted(sortedList.begin(), sortedList.end()))
     //     std::cout << "Sorted\n";
     // else
     //     std::cout << "Not sorted\n";
@@ -418,6 +425,24 @@ bool PmergeMe::hasDuplicates(const std::list<int> &lst)
 {
     std::unordered_set<int> set(lst.begin(), lst.end());
     return set.size() != lst.size();
+}
+
+void PmergeMe::sortListTest()
+{
+    std::cout << "sortList Test: ";
+    if (std::is_sorted(sortedList.begin(), sortedList.end()))
+        std::cout << "Sorted\n";
+    else
+        std::cout << "Not sorted\n";
+}
+
+void PmergeMe::sortVectorTest()
+{
+    std::cout << "sortVector Test: ";
+    if (std::is_sorted(sorted.begin(), sorted.end()))
+        std::cout << "Sorted\n";
+    else
+        std::cout << "Not sorted\n";
 }
 
 void PmergeMe::timeSortList(int argc, char *argv[])
@@ -433,11 +458,13 @@ void PmergeMe::timeSortList(int argc, char *argv[])
         }
         lst.push_back(num);
     }
-    if (hasDuplicates(lst))
-    {
-        throw std::invalid_argument("Error");
-    }
+    // if (hasDuplicates(lst))
+    // {
+    //     throw std::invalid_argument("Error");
+    // }
     MergeInsertionSort(lst);
     auto end = std::chrono::high_resolution_clock::now();
+    std::cout << "After: ";
+    printList(sortedList);
     printTime(end - start, argc - 1, "std::list");
 }

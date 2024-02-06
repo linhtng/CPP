@@ -19,6 +19,8 @@ public:
     void timeSortList(int argc, char *argv[]);
     void printVector(const std::vector<int> &vec);
     void printList(const std::list<int> &lst);
+    void sortVectorTest();
+    void sortListTest();
 
 private:
     void MergeInsertionSort(std::vector<int> &vec);
