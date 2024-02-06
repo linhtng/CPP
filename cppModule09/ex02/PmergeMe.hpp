@@ -4,7 +4,8 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
-#include <exception>
+#include <stdexcept>
+#include <unordered_set>
 
 class PmergeMe
 {
@@ -14,24 +15,44 @@ public:
     PmergeMe &operator=(const PmergeMe &other);
     ~PmergeMe();
 
-    std::chrono::duration<double> timeSortVector(std::vector<int> &vec);
-    std::chrono::duration<double> timeSortList(std::list<int> &lst);
+    void timeSortVector(int argc, char *argv[]);
+    void timeSortList(int argc, char *argv[]);
     void printVector(const std::vector<int> &vec);
+    void printList(const std::list<int> &lst);
 
 private:
-    // std::vector<int> MergeInsertionSort(const std::vector<int> &arr);
     void MergeInsertionSort(std::vector<int> &vec);
-    std::list<int> MergeInsertionSort(const std::list<int> &arr);
+    void MergeInsertionSort(std::list<int> &lst);
+
     std::vector<int> generatePowerSequence(int length);
     std::list<int> generatePowerSequenceList(int length);
+
     std::vector<std::pair<int, int>> makePairs(const std::vector<int> &vec);
+    std::list<std::pair<int, int>> makePairs(const std::list<int> &lst);
+
     std::vector<std::vector<int>> partition(std::vector<int> &nums, std::vector<int> &groupSizes);
+    std::list<std::list<int>> partition(std::list<int> &nums, std::list<int> &groupSizes);
+
     std::vector<int> binarySearchLength(const std::vector<int> &vec);
+    std::list<int> binarySearchLength(const std::list<int> &lst);
+
     void binaryInsertionSort(std::vector<int> &subsequence, int elemToInsert);
+    void binaryInsertionSortList(std::list<int> &subsequenceToInsert, int elemToInsert);
+
     int binarySearch(std::vector<int> &subsequence, int left, int right, int elemToInsert);
-    std::vector<int> findSubsequence(const std::vector<int> &newSequence, int rightmostValue);
+    int binarySearchList(std::list<int> &subsequence, int left, int right, int elemToInsert);
+
+    std::vector<int> findSubsequence(const std::vector<int> &newSequence, int upperBound);
+    std::list<int> findSubsequence(const std::list<int> &newSequence, const std::list<int> &oldSequence, int upperBound);
+
+    bool hasDuplicates(const std::vector<int> &vec);
+    bool hasDuplicates(const std::list<int> &lst);
+    void printTime(const std::chrono::high_resolution_clock::duration &duration, int sequenceLen, const std::string &type);
 
     std::vector<int> sorted;
     std::vector<int> unsorted;
+
+    std::list<int> sortedList;
+    std::list<int> unsortedList;
     bool oddSize;
 };
