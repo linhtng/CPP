@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     std::cout << "\n";
     try
     {
-        p.timeSortVector(argc, argv);
+        // p.timeSortVector(argc, argv);
         p.timeSortList(argc, argv);
     }
     catch (std::invalid_argument &e)
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
         std::cout << "Error: invalid input\n";
         return 1;
     }
-    p.sortVectorTest();
+    // p.sortVectorTest();
     p.sortListTest();
     return 0;
 }

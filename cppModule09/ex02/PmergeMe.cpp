@@ -124,26 +124,35 @@ int PmergeMe::binarySearch(std::vector<int> &subsequence, int left, int right, i
     return binarySearch(subsequence, left, mid - 1, elemToInsert);
 }
 
-void PmergeMe::binaryInsertionSort(std::vector<int> &subsequenceToInsert, int elemToInsert)
+void PmergeMe::binaryInsertionSort(std::vector<int> &mainChain, int elemToInsert)
 {
     // std::cout << "Subsequence to insert: \n";
     // printVector(subsequenceToInsert);
-    int location = binarySearch(subsequenceToInsert, 0, subsequenceToInsert.size() - 1, elemToInsert);
+    auto it = std::lower_bound(mainChain.begin(), mainChain.end(), elemToInsert);
+    if (it != mainChain.begin())
+    {
+        std::vector<int> subsequence(mainChain.begin(), it);
+        int location = binarySearch(subsequence, 0, subsequence.size() - 1, elemToInsert);
+        sorted.insert(sorted.begin() + location, elemToInsert);
+    }
+    else
+    {
+        sorted.insert(sorted.begin(), elemToInsert);
+    }
     // std::cout << "Location: " << location << "\n";
-    sorted.insert(sorted.begin() + location, elemToInsert);
     // std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
     // printVector(sorted);
     // sorted.insert(sorted.begin() + lowerBound, elemToInsert);
 }
 
-std::vector<int> PmergeMe::findSubsequence(const std::vector<int> &newSequence, int upperBound)
+std::vector<int> PmergeMe::findSubsequence(const std::vector<int> &newSequence, int elemToInsert)
 {
     // Find the location of the upperBound value in the new sequence
-    auto it = std::find(newSequence.begin(), newSequence.end(), upperBound);
+    auto it = std::lower_bound(newSequence.begin(), newSequence.end(), elemToInsert);
 
     // Create a subsequence from the beginning of the new sequence to the location of the upperBound value
-    std::vector<int> subsequence(newSequence.begin(), it + 1);
-    std::cout << "Vector: Subsequence with upperBound " << upperBound << ": \n";
+    std::vector<int> subsequence(newSequence.begin(), it);
+    std::cout << "Vector: Subsequence to search for elem " << elemToInsert << ": \n";
     printVector(subsequence);
     return subsequence;
 }
@@ -187,26 +196,28 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     // std::cout << "Unsorted in groups: \n";
     std::vector<std::vector<int>> orderToInsert = partition(unsorted, groupSizes);
     // Step 6: Insert the remaining elements into the sorted sequence using binary search
-    std::vector<int> subsequenceLength = binarySearchLength(groupSizes);
-    std::cout << "Subsequence length: \n";
-    printVector(subsequenceLength);
-    std::vector<int> originalSorted = sorted;
+    // std::vector<int> subsequenceLength = binarySearchLength(groupSizes);
+    // std::cout << "Subsequence length: \n";
+    // printVector(subsequenceLength);
+    // std::vector<int> originalSorted = sorted;
     for (const auto &uninsertedGroup : orderToInsert)
     {
         for (const auto &element : uninsertedGroup)
         {
-            if (subsequenceLength.empty() == false)
-            {
-                std::vector<int> subsequence = findSubsequence(sorted, originalSorted[subsequenceLength[0]]);
-                binaryInsertionSort(subsequence, element);
-                subsequenceLength.erase(subsequenceLength.begin());
-                std::cout << "Subsequence length: \n";
-                printVector(subsequenceLength);
-            }
-            else
-            {
-                binaryInsertionSort(sorted, element);
-            }
+            // if (subsequenceLength.empty() == false)
+            // {
+            //     std::vector<int> subsequence = findSubsequence(sorted, originalSorted[subsequenceLength[0]]);
+            //     binaryInsertionSort(subsequence, element);
+            //     subsequenceLength.erase(subsequenceLength.begin());
+            //     std::cout << "Subsequence length: \n";
+            //     printVector(subsequenceLength);
+            // }
+            // else
+            // {
+            //     binaryInsertionSort(sorted, element);
+            // }
+            // std::vector<int> subsequence = findSubsequence(sorted, element);
+            binaryInsertionSort(sorted, element);
         }
     }
     // if (std::is_sorted(sorted.begin(), sorted.end()))
