@@ -7,6 +7,10 @@
 #include <stdexcept>
 #include <unordered_set>
 
+#define RED "\e[91m"
+#define CYAN "\033[36m"
+#define RESET "\e[0m"
+
 class PmergeMe
 {
 public:
@@ -46,6 +50,8 @@ private:
 
     std::vector<int> findSubsequence(const std::vector<int> &newSequence, int upperBound);
     std::list<int> findSubsequence(const std::list<int> &newSequence, const std::list<int> &oldSequence, int upperBound);
+
+    std::list<int>::iterator list_lower_bound(std::list<int> &lst, const int &value);
 
     bool hasDuplicates(const std::vector<int> &vec);
     bool hasDuplicates(const std::list<int> &lst);
