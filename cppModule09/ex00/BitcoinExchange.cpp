@@ -72,7 +72,10 @@ double BitcoinExchange::findClosestPrice(const std::string &date)
 {
     std::map<std::string, double>::iterator lower = prices.lower_bound(date);
     if (lower == prices.begin())
-        return 0;
+    {
+        std::cout << RED "Error: date too far in the past => " << date << "\n" RESET;
+        return ERROR;
+    }
     else
         return std::prev(lower)->second;
 }
@@ -97,8 +100,12 @@ void BitcoinExchange::displayBitcoinValue(const std::string &inputFile)
                     exchangeRate = it->second;
                 else
                     exchangeRate = findClosestPrice(date);
-                double result = value * exchangeRate;
-                std::cout << date << " => " << std::setprecision(10) << value << " = " << result << std::endl;
+                if (exchangeRate != ERROR)
+                {
+                    double result = value * exchangeRate;
+                    std::cout << date << " => " << std::setprecision(10)
+                              << value << " = " << result << std::endl;
+                }
             }
         }
         else if (line != "date | value")

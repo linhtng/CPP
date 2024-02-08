@@ -16,6 +16,8 @@
 #define CYAN "\033[36m"
 #define RESET "\e[0m"
 
+#define ERROR -1
+
 class BitcoinExchange
 {
 public:
