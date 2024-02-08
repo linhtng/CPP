@@ -133,11 +133,13 @@ void PmergeMe::binaryInsertionSort(std::vector<int> &mainChain, int elemToInsert
     // printVector(sorted);
 }
 
-void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
+void PmergeMe::MergeInsertionSort(std::vector<int> &vec, int size)
 {
     // Step 1+2: Group the elements into pairs and perform comparisons to determine the larger element in each pair
-    if (vec.size() % 2 != 0)
+    if (vec.size() % 2 != 0 && vec.size() > 1)
         oddSize = true;
+    if (size / 2 <= 1)
+        return;
     std::vector<std::pair<int, int>> paired = makePairs(vec);
 
     // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
@@ -147,6 +149,7 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
         sorted.push_back(pair.first);
         unsorted.push_back(pair.second);
     }
+    MergeInsertionSort(sorted, size / 2);
     if (oddSize)
         unsorted.push_back(vec.back());
     // std::cout << "Sorted atfer step 1 - 3: \n";
@@ -217,12 +220,13 @@ void PmergeMe::timeSortVector(int argc, char *argv[])
         }
         vec.push_back(num);
     }
+    size = vec.size();
     // if (hasDuplicates(vec))
     // {
     //     std::cout << "Duplicates found.\n";
     //     throw std::invalid_argument("Error");
     // }
-    MergeInsertionSort(vec);
+    MergeInsertionSort(vec, size);
     std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
     std::cout << "After: ";
     printVector(sorted);

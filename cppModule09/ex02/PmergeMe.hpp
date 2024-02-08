@@ -27,7 +27,7 @@ public:
     void sortListTest();
 
 private:
-    void MergeInsertionSort(std::vector<int> &vec);
+    void MergeInsertionSort(std::vector<int> &vec, int size);
     void MergeInsertionSort(std::list<int> &lst);
 
     std::vector<int> generatePowerSequence(int length);
@@ -63,4 +63,5 @@ private:
     std::list<int> sortedList;
     std::list<int> unsortedList;
     bool oddSize;
+    int size;
 };
