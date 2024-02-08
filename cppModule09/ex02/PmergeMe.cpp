@@ -166,18 +166,28 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     Step 5 : Partition the unsorted elems into groups with contiguous indexes.
     The sums of sizes of every two adjacent groups form a sequence of powers of two
     */
-    std::vector<int> groupSizes = generatePowerSequence(unsorted.size());
-    // std::cout << "Groups'sized generated so as the sums of sizes of every two adjacent groups form a sequence of powers of two: \n";
-    // printVector(groupSizes);
-    // std::cout << "Unsorted in groups: \n";
-    std::vector<std::vector<int>> orderToInsert = partition(unsorted, groupSizes);
-    // Step 6: Insert the remaining elements into the sorted sequence using binary search
-    for (const std::vector<int> &uninsertedGroup : orderToInsert)
+    if (unsorted.size() == 0)
+        return;
+    if (unsorted.size() > 1)
     {
-        for (const int &element : uninsertedGroup)
+        std::vector<int> groupSizes = generatePowerSequence(unsorted.size());
+        // std::cout << "Groups'sized generated so as the sums of sizes of every two adjacent groups form a sequence of powers of two: \n";
+        // printVector(groupSizes);
+        // std::cout << "Unsorted in groups: \n";
+        std::vector<std::vector<int>> orderToInsert = partition(unsorted, groupSizes);
+        // Step 6: Insert the remaining elements into the sorted sequence using binary search
+        for (const std::vector<int> &uninsertedGroup : orderToInsert)
         {
-            binaryInsertionSort(sorted, element);
+            for (const int &element : uninsertedGroup)
+            {
+                sorted.insert(std::lower_bound(sorted.begin(), sorted.end(), element), element);
+            }
         }
+    }
+    else if (unsorted.size() == 1)
+    {
+        int elemToInsert = unsorted.front();
+        sorted.insert(std::lower_bound(sorted.begin(), sorted.end(), elemToInsert), elemToInsert);
     }
 }
 
