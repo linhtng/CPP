@@ -39,16 +39,12 @@ private:
     std::vector<std::vector<int>> partition(std::vector<int> &nums, std::vector<int> &groupSizes);
     std::list<std::list<int>> partition(std::list<int> &nums, std::list<int> &groupSizes);
 
-    std::vector<int> binarySearchLength(const std::vector<int> &vec);
     std::list<int> binarySearchLength(const std::list<int> &lst);
 
-    void binaryInsertionSort(std::vector<int> &subsequence, int elemToInsert);
     void binaryInsertionSortList(std::list<int> &subsequenceToInsert, int elemToInsert);
 
-    int binarySearch(std::vector<int> &subsequence, int left, int right, int elemToInsert);
     int binarySearchList(std::list<int> &subsequence, int left, int right, int elemToInsert);
 
-    std::vector<int> findSubsequence(const std::vector<int> &newSequence, int upperBound);
     std::list<int> findSubsequence(const std::list<int> &newSequence, const std::list<int> &oldSequence, int upperBound);
 
     std::list<int>::iterator list_lower_bound(std::list<int> &lst, const int &value);

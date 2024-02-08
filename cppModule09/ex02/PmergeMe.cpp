@@ -98,55 +98,30 @@ std::vector<std::vector<int>> PmergeMe::partition(std::vector<int> &nums, std::v
     return partitions;
 }
 
-int PmergeMe::binarySearch(std::vector<int> &subsequence, int left, int right, int elemToInsert)
-{
-    if (right <= left)
-        return (elemToInsert > subsequence[left]) ? (left + 1) : left;
-    int mid = (left + right) / 2;
-    if (elemToInsert > subsequence[mid])
-        return binarySearch(subsequence, mid + 1, right, elemToInsert);
-    return binarySearch(subsequence, left, mid - 1, elemToInsert);
-}
-/*
-This function inserts an element into a sorted list using binary search.
-Before inserting, we find the location to insert the element using binary search.
-The binary search is done on a subsequence of the sorted list.
-The subsequence size is determined by the location of the lowerbound of the elemToInsert in the sorted chain.
-If all the elements in the chain are larger than elemToInsert,
-just insert it to the beginning of the sorted chain.
-*/
-void PmergeMe::binaryInsertionSort(std::vector<int> &mainChain, int elemToInsert)
-{
-    std::vector<int>::iterator it = std::lower_bound(mainChain.begin(), mainChain.end(), elemToInsert);
-    if (it != mainChain.begin())
-    {
-        std::vector<int> subsequence(mainChain.begin(), it);
-        int location = binarySearch(subsequence, 0, subsequence.size() - 1, elemToInsert);
-        sorted.insert(sorted.begin() + location, elemToInsert);
-    }
-    else
-    {
-        sorted.insert(sorted.begin(), elemToInsert);
-    }
-    // std::cout << "Location: " << location << "\n";
-    // std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
-    // printVector(sorted);
-}
-
 void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
 {
-    // Step 1+2: Group the elements into pairs and perform comparisons to determine the larger element in each pair
+    /*
+    Step 1+2: Group the elements into pairs and perform (size / 2) comparisons
+    to determine the larger element in each pair
+    */
     if (vec.size() % 2 != 0)
         oddSize = true;
+    std::cout << "Vec size: " << vec.size() << '\n';
+    // if (vec.size() <= 1)
+    //     return;
     std::vector<std::pair<int, int>> paired = makePairs(vec);
 
     // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
     std::sort(paired.begin(), paired.end());
+    // MergeInsertionSort(sorted);
     for (const std::pair<int, int> &pair : paired)
     {
-        sorted.push_back(pair.first);
-        unsorted.push_back(pair.second);
+        sorted.push_back(pair.second);
+        unsorted.push_back(pair.first);
     }
+    // MergeInsertionSort(sorted);
+    std::cout << "Sorted after each recursive call:\n";
+    printVector(sorted);
     if (oddSize)
         unsorted.push_back(vec.back());
     // std::cout << "Sorted atfer step 1 - 3: \n";
@@ -157,6 +132,15 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     // Step 4: Insert the element paired with the smallest element at the start of the sorted sequence
     sorted.insert(sorted.begin(), unsorted.front());
     unsorted.erase(unsorted.begin());
+    std::cout << "Unsorted size after step 4:" << unsorted.size() << " \n";
+    printVector(unsorted);
+    std::cout << "Sorted: ";
+    printVector(sorted);
+    if (unsorted.empty())
+    {
+        std::cout << "Unsorted is empty. Returning. \n";
+        return;
+    }
     // std::cout << "[Vector] Sorted after step 4: \n";
     // printVector(sorted);
     // std::cout << "Unsorted: \n";
@@ -166,18 +150,29 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     Step 5 : Partition the unsorted elems into groups with contiguous indexes.
     The sums of sizes of every two adjacent groups form a sequence of powers of two
     */
-    std::vector<int> groupSizes = generatePowerSequence(unsorted.size());
     // std::cout << "Groups'sized generated so as the sums of sizes of every two adjacent groups form a sequence of powers of two: \n";
     // printVector(groupSizes);
     // std::cout << "Unsorted in groups: \n";
-    std::vector<std::vector<int>> orderToInsert = partition(unsorted, groupSizes);
-    // Step 6: Insert the remaining elements into the sorted sequence using binary search
-    for (const std::vector<int> &uninsertedGroup : orderToInsert)
+    if (unsorted.size() > 1)
     {
-        for (const int &element : uninsertedGroup)
+        std::vector<int> groupSizes = generatePowerSequence(unsorted.size());
+        std::vector<std::vector<int>> orderToInsert = partition(unsorted, groupSizes);
+        // Step 6: Insert the remaining elements into the sorted sequence using binary search
+        for (const std::vector<int> &uninsertedGroup : orderToInsert)
         {
-            binaryInsertionSort(sorted, element);
+            for (const int &element : uninsertedGroup)
+            {
+                sorted.insert(std::lower_bound(sorted.begin(), sorted.end(), element), element);
+            }
         }
+    }
+    else if (unsorted.size() == 1)
+    {
+        int elemToInsert = unsorted.front();
+        sorted.insert(std::lower_bound(sorted.begin(), sorted.end(), elemToInsert), elemToInsert);
+        std::cout << "Sorted after inserting: " << elemToInsert << '\n';
+        printVector(sorted);
+        return;
     }
 }
 
