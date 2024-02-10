@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     try
     {
         p.timeSortVector(argc, argv);
-        p.timeSortList(argc, argv);
+        // p.timeSortList(argc, argv);
     }
     catch (std::invalid_argument &e)
     {
@@ -25,6 +25,6 @@ int main(int argc, char *argv[])
         return 1;
     }
     p.sortVectorTest();
-    p.sortListTest();
+    // p.sortListTest();
     return 0;
 }

@@ -1,6 +1,6 @@
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe() : oddSize(false) {}
+PmergeMe::PmergeMe() {}
 
 PmergeMe::PmergeMe(const PmergeMe &other)
 {
@@ -9,7 +9,7 @@ PmergeMe::PmergeMe(const PmergeMe &other)
 
 PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 {
-    oddSize = other.oddSize;
+    (void)other;
     return *this;
 }
 
@@ -64,8 +64,10 @@ std::vector<std::pair<int, int>> PmergeMe::makePairs(const std::vector<int> &vec
 {
     std::vector<std::pair<int, int>> pairs;
     std::vector<int> temp(vec);
-    if (oddSize)
+    if (vec.size() % 2 != 0)
         temp.pop_back();
+    // std::cout << "Temp: ";
+    // printVector(temp);
     for (size_t i = 0; i < temp.size() - 1; i += 2)
     {
         std::pair<int, int> pair = std::minmax(temp[i], temp[i + 1]);
@@ -98,63 +100,59 @@ std::vector<std::vector<int>> PmergeMe::partition(std::vector<int> &nums, std::v
     return partitions;
 }
 
-int PmergeMe::binarySearch(std::vector<int> &subsequence, int left, int right, int elemToInsert)
-{
-    if (right <= left)
-        return (elemToInsert > subsequence[left]) ? (left + 1) : left;
-    int mid = (left + right) / 2;
-    if (elemToInsert > subsequence[mid])
-        return binarySearch(subsequence, mid + 1, right, elemToInsert);
-    return binarySearch(subsequence, left, mid - 1, elemToInsert);
-}
-/*
-This function inserts an element into a sorted list using binary search.
-Before inserting, we find the location to insert the element using binary search.
-The binary search is done on a subsequence of the sorted list.
-The subsequence size is determined by the location of the lowerbound of the elemToInsert in the sorted chain.
-If all the elements in the chain are larger than elemToInsert,
-just insert it to the beginning of the sorted chain.
-*/
-void PmergeMe::binaryInsertionSort(std::vector<int> &mainChain, int elemToInsert)
-{
-    std::vector<int>::iterator it = std::lower_bound(mainChain.begin(), mainChain.end(), elemToInsert);
-    if (it != mainChain.begin())
-    {
-        std::vector<int> subsequence(mainChain.begin(), it);
-        int location = binarySearch(subsequence, 0, subsequence.size() - 1, elemToInsert);
-        sorted.insert(sorted.begin() + location, elemToInsert);
-    }
-    else
-    {
-        sorted.insert(sorted.begin(), elemToInsert);
-    }
-    // std::cout << "Location: " << location << "\n";
-    // std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
-    // printVector(sorted);
-}
-
-void PmergeMe::MergeInsertionSort(std::vector<int> &vec, int size)
+void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
 {
     // Step 1+2: Group the elements into pairs and perform comparisons to determine the larger element in each pair
-    if (vec.size() % 2 != 0 && vec.size() > 1)
-        oddSize = true;
-    if (size / 2 <= 1)
+    std::cout << "Vec: ";
+    printVector(vec);
+    if (vec.size() <= 1)
         return;
+    bool oddSize = false;
+    int lastElement = 0;
+    if (vec.size() % 2 != 0)
+    {
+        oddSize = true;
+        lastElement = vec.back();
+    }
+    // std::cout << "Vec: ";
+    // printVector(vec);
     std::vector<std::pair<int, int>> paired = makePairs(vec);
 
     // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
-    std::sort(paired.begin(), paired.end());
+    sorted.clear();
+    // std::vector<int> unsortedPairs;
     for (const std::pair<int, int> &pair : paired)
     {
         sorted.push_back(pair.first);
-        unsorted.push_back(pair.second);
+        // unsortedPairs.push_back(pair.second);
     }
-    MergeInsertionSort(sorted, size / 2);
+    MergeInsertionSort(sorted);
+    unsorted.clear();
+    if (paired.size() > 1)
+    {
+        for (const int &element : sorted)
+        {
+            auto it = std::find_if(paired.begin(), paired.end(), [&element](const auto &item)
+                                   { return std::get<0>(item) == element; });
+            if (it != paired.end())
+            {
+                // found!
+                // std::cout << "Unsorted found: " << std::get<1>(*it) << std::endl;
+                unsorted.push_back(std::get<1>(*it));
+            }
+        }
+    }
+    else
+    {
+        unsorted.push_back(paired.front().second);
+    }
+    // std::cout << "Unsorted line 138: \n";
+    // printVector(unsorted);
     if (oddSize)
-        unsorted.push_back(vec.back());
+        unsorted.push_back(lastElement);
     // std::cout << "Sorted atfer step 1 - 3: \n";
     // printVector(sorted);
-    // std::cout << "Unsorted: \n";
+    // std::cout << "Unsorted line 144: \n";
     // printVector(unsorted);
 
     // Step 4: Insert the element paired with the smallest element at the start of the sorted sequence
@@ -169,8 +167,6 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec, int size)
     Step 5 : Partition the unsorted elems into groups with contiguous indexes.
     The sums of sizes of every two adjacent groups form a sequence of powers of two
     */
-    if (unsorted.size() == 0)
-        return;
     if (unsorted.size() > 1)
     {
         std::vector<int> groupSizes = generatePowerSequence(unsorted.size());
@@ -226,11 +222,12 @@ void PmergeMe::timeSortVector(int argc, char *argv[])
     //     std::cout << "Duplicates found.\n";
     //     throw std::invalid_argument("Error");
     // }
-    MergeInsertionSort(vec, size);
+    MergeInsertionSort(vec);
     std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
     std::cout << "After: ";
     printVector(sorted);
     printTime(end - start, argc - 1, "std::vector");
+    original = vec;
 }
 
 void PmergeMe::printList(const std::list<int> &lst)
@@ -246,8 +243,8 @@ std::list<std::pair<int, int>> PmergeMe::makePairs(const std::list<int> &lst)
 {
     std::list<std::pair<int, int>> pairs;
     std::list<int> temp(lst);
-    if (oddSize)
-        temp.pop_back();
+    // if (oddSize)
+    //     temp.pop_back();
     for (std::list<int>::iterator it = temp.begin(); it != temp.end(); std::advance(it, 2))
     {
         std::pair<int, int> pair = std::minmax(*it, *std::next(it));
@@ -327,6 +324,7 @@ std::list<int>::iterator PmergeMe::list_lower_bound(std::list<int> &lst, const i
 void PmergeMe::MergeInsertionSort(std::list<int> &lst)
 {
     // Step 1+2: Group the elements into pairs and perform comparisons to determine the larger element in each pair
+    bool oddSize = false;
     if (lst.size() % 2 != 0)
         oddSize = true;
     std::list<std::pair<int, int>> paired = makePairs(lst);
@@ -395,6 +393,12 @@ void PmergeMe::sortListTest()
 void PmergeMe::sortVectorTest()
 {
     std::cout << "sortVector Test: ";
+    // std::sort(original.begin(), original.end());
+    // printVector(original);
+    // if (original == sorted)
+    //     std::cout << CYAN "Sorted\n" RESET;
+    // else
+    //     std::cout << RED "Not sorted\n" RESET;
     if (std::is_sorted(sorted.begin(), sorted.end()))
         std::cout << CYAN "Sorted\n" RESET;
     else

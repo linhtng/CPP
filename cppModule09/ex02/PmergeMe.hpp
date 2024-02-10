@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <unordered_set>
+#include <iterator>
 
 #define RED "\e[91m"
 #define CYAN "\033[36m"
@@ -27,7 +28,7 @@ public:
     void sortListTest();
 
 private:
-    void MergeInsertionSort(std::vector<int> &vec, int size);
+    void MergeInsertionSort(std::vector<int> &vec);
     void MergeInsertionSort(std::list<int> &lst);
 
     std::vector<int> generatePowerSequence(int length);
@@ -60,8 +61,10 @@ private:
     std::vector<int> sorted;
     std::vector<int> unsorted;
 
+    std::vector<int> original;
+
     std::list<int> sortedList;
     std::list<int> unsortedList;
-    bool oddSize;
+    // bool oddSize;
     int size;
 };
