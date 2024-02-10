@@ -63,15 +63,9 @@ std::list<int> PmergeMe::generatePowerSequenceList(int length)
 std::vector<std::pair<int, int>> PmergeMe::makePairs(const std::vector<int> &vec)
 {
     std::vector<std::pair<int, int>> pairs;
-    std::vector<int> temp(vec);
-    if (vec.size() % 2 != 0)
-        temp.pop_back();
-    // std::cout << "Temp: ";
-    // printVector(temp);
-    for (size_t i = 0; i < temp.size() - 1; i += 2)
+    for (size_t i = 0; i < vec.size() - 1; i += 2)
     {
-        std::pair<int, int> pair = std::minmax(temp[i], temp[i + 1]);
-        std::swap(pair.first, pair.second);
+        std::pair<int, int> pair = std::minmax(vec[i], vec[i + 1]);
         pairs.push_back(pair);
     }
     return pairs;
@@ -113,46 +107,42 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     {
         oddSize = true;
         lastElement = vec.back();
+        vec.pop_back(); // Remove the last element
     }
-    // std::cout << "Vec: ";
-    // printVector(vec);
     std::vector<std::pair<int, int>> paired = makePairs(vec);
 
     // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
     sorted.clear();
-    // std::vector<int> unsortedPairs;
     for (const std::pair<int, int> &pair : paired)
     {
-        sorted.push_back(pair.first);
-        // unsortedPairs.push_back(pair.second);
+        sorted.push_back(pair.second);
+    }
+    // Create a map from the pairs
+    std::unordered_map<int, int> pairMap;
+    for (const std::pair<int, int> &pair : paired)
+    {
+        pairMap[pair.second] = pair.first;
     }
     MergeInsertionSort(sorted);
     unsorted.clear();
     if (paired.size() > 1)
     {
-        for (const int &element : sorted)
+        for (const int &element : sorted) // complexity O(n)
         {
-            auto it = std::find_if(paired.begin(), paired.end(), [&element](const auto &item)
-                                   { return std::get<0>(item) == element; });
-            if (it != paired.end())
-            {
-                // found!
-                // std::cout << "Unsorted found: " << std::get<1>(*it) << std::endl;
-                unsorted.push_back(std::get<1>(*it));
-            }
+            std::unordered_map<int, int>::iterator it = pairMap.find(element);
+            if (it != pairMap.end())
+                unsorted.push_back(it->second);
         }
     }
     else
     {
-        unsorted.push_back(paired.front().second);
+        unsorted.push_back(paired.front().first);
     }
-    // std::cout << "Unsorted line 138: \n";
-    // printVector(unsorted);
     if (oddSize)
         unsorted.push_back(lastElement);
     // std::cout << "Sorted atfer step 1 - 3: \n";
     // printVector(sorted);
-    // std::cout << "Unsorted line 144: \n";
+    // std::cout << "Unsorted: \n";
     // printVector(unsorted);
 
     // Step 4: Insert the element paired with the smallest element at the start of the sorted sequence
@@ -216,7 +206,6 @@ void PmergeMe::timeSortVector(int argc, char *argv[])
         }
         vec.push_back(num);
     }
-    size = vec.size();
     // if (hasDuplicates(vec))
     // {
     //     std::cout << "Duplicates found.\n";
@@ -227,7 +216,6 @@ void PmergeMe::timeSortVector(int argc, char *argv[])
     std::cout << "After: ";
     printVector(sorted);
     printTime(end - start, argc - 1, "std::vector");
-    original = vec;
 }
 
 void PmergeMe::printList(const std::list<int> &lst)
@@ -393,12 +381,6 @@ void PmergeMe::sortListTest()
 void PmergeMe::sortVectorTest()
 {
     std::cout << "sortVector Test: ";
-    // std::sort(original.begin(), original.end());
-    // printVector(original);
-    // if (original == sorted)
-    //     std::cout << CYAN "Sorted\n" RESET;
-    // else
-    //     std::cout << RED "Not sorted\n" RESET;
     if (std::is_sorted(sorted.begin(), sorted.end()))
         std::cout << CYAN "Sorted\n" RESET;
     else
