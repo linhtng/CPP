@@ -42,9 +42,9 @@ std::vector<int> PmergeMe::generatePowerSequence(int length)
     return sequence;
 }
 
-std::list<int> PmergeMe::generatePowerSequenceList(int length)
+std::deque<int> PmergeMe::generatePowerSequencedeque(int length)
 {
-    std::list<int> sequence;
+    std::deque<int> sequence;
 
     int power = 2;
     int sum = 0;
@@ -97,8 +97,6 @@ std::vector<std::vector<int>> PmergeMe::partition(std::vector<int> &nums, std::v
 void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
 {
     // Step 1+2: Group the elements into pairs and perform comparisons to determine the larger element in each pair
-    std::cout << "Vec: ";
-    printVector(vec);
     if (vec.size() <= 1)
         return;
     bool oddSize = false;
@@ -111,7 +109,8 @@ void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
     }
     std::vector<std::pair<int, int>> paired = makePairs(vec);
 
-    // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
+    /* Step 3: Recursively sort the larger elements and create a sorted sequence
+    of larger elements in ascending order */
     sorted.clear();
     for (const std::pair<int, int> &pair : paired)
     {
@@ -218,134 +217,141 @@ void PmergeMe::timeSortVector(int argc, char *argv[])
     printTime(end - start, argc - 1, "std::vector");
 }
 
-void PmergeMe::printList(const std::list<int> &lst)
+void PmergeMe::printdeque(const std::deque<int> &dequ)
 {
-    for (const int &element : lst)
+    for (const int &element : dequ)
     {
         std::cout << element << " ";
     }
     std::cout << "\n";
 }
 
-std::list<std::pair<int, int>> PmergeMe::makePairs(const std::list<int> &lst)
+std::deque<std::pair<int, int>> PmergeMe::makePairs(const std::deque<int> &dequ)
 {
-    std::list<std::pair<int, int>> pairs;
-    std::list<int> temp(lst);
-    // if (oddSize)
-    //     temp.pop_back();
-    for (std::list<int>::iterator it = temp.begin(); it != temp.end(); std::advance(it, 2))
+    std::deque<std::pair<int, int>> pairs;
+    for (size_t i = 0; i < dequ.size() - 1; i += 2)
     {
-        std::pair<int, int> pair = std::minmax(*it, *std::next(it));
-        std::swap(pair.first, pair.second);
+        std::pair<int, int> pair = std::minmax(dequ[i], dequ[i + 1]);
         pairs.push_back(pair);
     }
     return pairs;
 }
 
-std::list<std::list<int>> PmergeMe::partition(std::list<int> &nums, std::list<int> &groupSizes)
+std::deque<std::deque<int>> PmergeMe::partition(std::deque<int> &nums, std::deque<int> &groupSizes)
 {
-    std::list<std::list<int>> partitions;
-    std::list<int>::iterator start = nums.begin();
+    std::deque<std::deque<int>> partitions;
+    std::deque<int>::iterator start = nums.begin();
     for (int size : groupSizes)
     {
-        std::list<int>::iterator end = start;
+        std::deque<int>::iterator end = start;
         std::advance(end, std::min(size, static_cast<int>(std::distance(start, nums.end()))));
-        std::list<int> partition(start, end);
-        partition.reverse();
+        std::deque<int> partition(start, end);
+        // partition.reverse();
         partitions.push_back(partition);
         std::advance(start, size);
     }
     // std::cout << "Partition start" << '\n';
-    // for (const auto &sub_list : partitions)
+    // for (const auto &sub_deque : partitions)
     // {
-    //     printList(sub_list);
+    //     printdeque(sub_deque);
     //     std::cout << "Partition done" << '\n';
     // }
     return partitions;
 }
 
-int PmergeMe::binarySearchList(std::list<int> &subsequence, int left, int right, int elemToInsert)
+int PmergeMe::binarySearchdeque(std::deque<int> &subsequence, int left, int right, int elemToInsert)
 {
     if (right <= left)
         return (elemToInsert > *std::next(subsequence.begin(), left)) ? (left + 1) : left;
     int mid = (left + right) / 2;
     if (elemToInsert > *std::next(subsequence.begin(), mid))
-        return binarySearchList(subsequence, mid + 1, right, elemToInsert);
-    return binarySearchList(subsequence, left, mid - 1, elemToInsert);
+        return binarySearchdeque(subsequence, mid + 1, right, elemToInsert);
+    return binarySearchdeque(subsequence, left, mid - 1, elemToInsert);
 }
 
 /*
-This function first find a subsequence of the sorted list that contains the elements up to the
+This function first find a subsequence of the sorted deque that contains the elements up to the
 lowerbound of the elemToInsert. It then performs a binary search on that subsequence to find the location
 to insert the element.
 */
-void PmergeMe::binaryInsertionSortList(std::list<int> &mainChain, int elemToInsert)
+void PmergeMe::binaryInsertionSortdeque(std::deque<int> &mainChain, int elemToInsert)
 {
-    std::list<int>::iterator it = list_lower_bound(mainChain, elemToInsert);
+    std::deque<int>::iterator it = deque_lower_bound(mainChain, elemToInsert);
     if (it != mainChain.begin())
     {
-        std::list<int> subsequence(mainChain.begin(), it);
-        int location = binarySearchList(subsequence, 0, subsequence.size() - 1, elemToInsert);
-        sortedList.insert(std::next(sortedList.begin(), location), elemToInsert);
+        std::deque<int> subsequence(mainChain.begin(), it);
+        int location = binarySearchdeque(subsequence, 0, subsequence.size() - 1, elemToInsert);
+        sorteddeque.insert(std::next(sorteddeque.begin(), location), elemToInsert);
     }
     else
     {
-        sortedList.insert(sortedList.begin(), elemToInsert);
+        sorteddeque.insert(sorteddeque.begin(), elemToInsert);
     }
     // std::cout << "Subsequence to insert: \n";
-    // printList(subsequenceToInsert);
+    // printdeque(subsequenceToInsert);
     // std::cout << "Location: " << location << "\n";
     // std::cout << "\nSorted after inserting:" << elemToInsert << "\n";
-    // printList(sortedList);
+    // printdeque(sorteddeque);
 }
 
-std::list<int>::iterator PmergeMe::list_lower_bound(std::list<int> &lst, const int &value)
+std::deque<int>::iterator PmergeMe::deque_lower_bound(std::deque<int> &dequ, const int &value)
 {
-    std::list<int>::iterator it = lst.begin();
-    while (it != lst.end() && *it < value)
+    std::deque<int>::iterator it = dequ.begin();
+    while (it != dequ.end() && *it < value)
     {
         ++it;
     }
     return it;
 }
 
-void PmergeMe::MergeInsertionSort(std::list<int> &lst)
+void PmergeMe::MergeInsertionSort(std::deque<int> &dequ)
 {
     // Step 1+2: Group the elements into pairs and perform comparisons to determine the larger element in each pair
+    if (dequ.size() <= 1)
+        return;
     bool oddSize = false;
-    if (lst.size() % 2 != 0)
+    int lastElement = 0;
+    if (dequ.size() % 2 != 0)
+    {
         oddSize = true;
-    std::list<std::pair<int, int>> paired = makePairs(lst);
-    // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
-    paired.sort();
+        lastElement = dequ.back();
+        dequ.pop_back(); // Remove the last element
+    }
+    std::deque<std::pair<int, int>> paired = makePairs(dequ);
     for (const std::pair<int, int> &pair : paired)
     {
-        sortedList.push_back(pair.first);
-        unsortedList.push_back(pair.second);
+        std::cout << "Pair: " << pair.first << " " << pair.second << '\n';
+    }
+    // Step 3: Sort the larger elements and create a sorted sequence of larger elements in ascending order
+    // paired.sort();
+    for (const std::pair<int, int> &pair : paired)
+    {
+        sorteddeque.push_back(pair.first);
+        unsorteddeque.push_back(pair.second);
     }
     if (oddSize)
-        unsortedList.push_back(lst.back());
+        unsorteddeque.push_back(dequ.back());
     // std::cout << "Sorted after step 1 - 3: \n";
-    // printList(sortedList);
+    // printdeque(sorteddeque);
     // std::cout << "Unsorted: \n";
-    // printList(unsortedList);
+    // printdeque(unsorteddeque);
 
     // Step 4: Insert the element paired with the smallest element at the start of the sorted sequence
-    sortedList.insert(sortedList.begin(), unsortedList.front());
-    unsortedList.erase(unsortedList.begin());
-    // std::cout << "[List] Sorted after step 4: \n";
-    // printList(sortedList);
+    sorteddeque.insert(sorteddeque.begin(), unsorteddeque.front());
+    unsorteddeque.erase(unsorteddeque.begin());
+    // std::cout << "[deque] Sorted after step 4: \n";
+    // printdeque(sorteddeque);
     // std::cout << "Unsorted: \n";
-    // printList(unsortedList);
+    // printdeque(unsorteddeque);
 
     /*
     Step 5 : Partition the unsorted elems into groups with contiguous indexes.
     The sums of sizes of every two adjacent groups form a sequence of powers of two
     */
-    std::list<int> groupSizes = generatePowerSequenceList(unsortedList.size());
-    // printList(groupSizes);
+    std::deque<int> groupSizes = generatePowerSequencedeque(unsorteddeque.size());
+    // printdeque(groupSizes);
     // std::cout << "Unsorted in partitioned groups: \n";
-    std::list<std::list<int>> orderToInsert = partition(unsortedList, groupSizes);
+    std::deque<std::deque<int>> orderToInsert = partition(unsorteddeque, groupSizes);
 
     /*
     Step 6: Insert the remaining elements into the sorted sequence using binary search
@@ -354,25 +360,25 @@ void PmergeMe::MergeInsertionSort(std::list<int> &lst)
     The subsequence length is to insert will be up to but not including x_i.
     We then perform a binary search on that subsequence to find the location to insert the element.
     */
-    for (const std::list<int> &uninsertedGroup : orderToInsert)
+    for (const std::deque<int> &uninsertedGroup : orderToInsert)
     {
         for (const int &element : uninsertedGroup)
         {
-            binaryInsertionSortList(sortedList, element);
+            binaryInsertionSortdeque(sorteddeque, element);
         }
     }
 }
 
-bool PmergeMe::hasDuplicates(const std::list<int> &lst)
+bool PmergeMe::hasDuplicates(const std::deque<int> &dequ)
 {
-    std::unordered_set<int> set(lst.begin(), lst.end());
-    return set.size() != lst.size();
+    std::unordered_set<int> set(dequ.begin(), dequ.end());
+    return set.size() != dequ.size();
 }
 
-void PmergeMe::sortListTest()
+void PmergeMe::sortdequeTest()
 {
-    std::cout << "sortList Test: ";
-    if (std::is_sorted(sortedList.begin(), sortedList.end()))
+    std::cout << "sortdeque Test: ";
+    if (std::is_sorted(sorteddeque.begin(), sorteddeque.end()))
         std::cout << CYAN "Sorted\n" RESET;
     else
         std::cout << RED "Not sorted\n" RESET;
@@ -387,10 +393,10 @@ void PmergeMe::sortVectorTest()
         std::cout << RED "Not sorted\n" RESET;
 }
 
-void PmergeMe::timeSortList(int argc, char *argv[])
+void PmergeMe::timeSortDeque(int argc, char *argv[])
 {
     std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
-    std::list<int> lst;
+    std::deque<int> dequ;
     for (int i = 1; i < argc; ++i)
     {
         int num = std::stoi(argv[i]);
@@ -398,15 +404,15 @@ void PmergeMe::timeSortList(int argc, char *argv[])
         {
             throw std::invalid_argument("Error");
         }
-        lst.push_back(num);
+        dequ.push_back(num);
     }
-    // if (hasDuplicates(lst))
+    // if (hasDuplicates(dequ))
     // {
     //     throw std::invalid_argument("Error");
     // }
-    MergeInsertionSort(lst);
+    MergeInsertionSort(dequ);
     std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
     // std::cout << "After: ";
-    // printList(sortedList);
-    printTime(end - start, argc - 1, "std::list");
+    // printdeque(sorteddeque);
+    printTime(end - start, argc - 1, "std::deque");
 }
