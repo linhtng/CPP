@@ -25,16 +25,16 @@ public:
     void timeSortVector(int argc, char *argv[]);
     void timeSortDeque(int argc, char *argv[]);
     void printVector(const std::vector<int> &vec);
-    void printdeque(const std::deque<int> &lst);
+    void printDeque(const std::deque<int> &lst);
     void sortVectorTest();
-    void sortdequeTest();
+    void sortDequeTest();
 
 private:
     void MergeInsertionSort(std::vector<int> &vec);
     void MergeInsertionSort(std::deque<int> &lst);
 
     std::vector<int> generatePowerSequence(int length);
-    std::deque<int> generatePowerSequencedeque(int length);
+    std::deque<int> generatePowerSequenceDeque(int length);
 
     std::vector<std::pair<int, int>> makePairs(const std::vector<int> &vec);
     std::deque<std::pair<int, int>> makePairs(const std::deque<int> &lst);
@@ -50,8 +50,6 @@ private:
 
     std::deque<int> findSubsequence(const std::deque<int> &newSequence, const std::deque<int> &oldSequence, int upperBound);
 
-    std::deque<int>::iterator deque_lower_bound(std::deque<int> &lst, const int &value);
-
     bool hasDuplicates(const std::vector<int> &vec);
     bool hasDuplicates(const std::deque<int> &lst);
     void printTime(const std::chrono::high_resolution_clock::duration &duration, int sequenceLen, const std::string &type);
@@ -59,6 +57,6 @@ private:
     std::vector<int> sorted;
     std::vector<int> unsorted;
 
-    std::deque<int> sorteddeque;
-    std::deque<int> unsorteddeque;
+    std::deque<int> sortedDeque;
+    std::deque<int> unsortedDeque;
 };
